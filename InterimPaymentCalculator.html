@@ -99,13 +99,14 @@
         @media (max-width: 768px) {
             body {
                 padding: 10px;
-                display: block;
+                display: block; /* Flexbox 해제 */
                 height: auto;
             }
             .container {
                 padding: 15px;
                 box-shadow: none;
                 border: 1px solid #eee;
+                max-width: 100%; /* 전체 너비 사용 */
             }
             .control-panel {
                 flex-direction: column;
@@ -116,7 +117,7 @@
                 width: 100%;
                 box-sizing: border-box;
                 padding: 12px;
-                font-size: 16px; /* Prevent zoom on iOS */
+                font-size: 16px; /* iOS 자동 줌 방지 */
             }
             button {
                 width: 100%;
@@ -147,9 +148,10 @@
                 position: relative;
                 padding: 10px 0;
                 display: flex;
-                justify-content: space-between;
-                align-items: center;
+                justify-content: space-between; /* 좌우 정렬 */
+                align-items: center; /* 수직 중앙 정렬 */
                 border-bottom: 1px solid #f0f0f0;
+                text-align: right; /* 텍스트 우측 정렬 */
             }
             td:last-child {
                 border-bottom: none;
@@ -157,26 +159,23 @@
             }
             
             /* Labels for Card View */
-            td:nth-of-type(1)::before { content: "회차"; font-weight: 600; color: #555; font-size: 14px; }
-            td:nth-of-type(2)::before { content: "기산일"; font-weight: 600; color: #555; font-size: 14px; }
-            td:nth-of-type(3)::before { content: "중도금 (원)"; font-weight: 600; color: #555; font-size: 14px; }
-            td:nth-of-type(4)::before { content: "연 이율 (%)"; font-weight: 600; color: #555; font-size: 14px; }
-            td:nth-of-type(5)::before { content: "경과 일수"; font-weight: 600; color: #555; font-size: 14px; }
-            td:nth-of-type(6)::before { content: "예상 이자"; font-weight: 600; color: #555; font-size: 14px; }
+            /* ::before 가상 요소를 사용하여 라벨 표시 */
+            td:nth-of-type(1)::before { content: "회차"; font-weight: 600; color: #555; font-size: 14px; margin-right: auto; }
+            td:nth-of-type(2)::before { content: "기산일"; font-weight: 600; color: #555; font-size: 14px; margin-right: auto; }
+            td:nth-of-type(3)::before { content: "중도금 (원)"; font-weight: 600; color: #555; font-size: 14px; margin-right: auto; }
+            td:nth-of-type(4)::before { content: "연 이율 (%)"; font-weight: 600; color: #555; font-size: 14px; margin-right: auto; }
+            td:nth-of-type(5)::before { content: "경과 일수"; font-weight: 600; color: #555; font-size: 14px; margin-right: auto; }
+            td:nth-of-type(6)::before { content: "예상 이자"; font-weight: 600; color: #555; font-size: 14px; margin-right: auto; }
 
             /* Input styling in card view */
             td input {
                 width: 60%;
-                font-size: 16px; /* Prevent zoom */
+                font-size: 16px;
                 box-sizing: border-box;
                 text-align: right;
-                padding: 5px;
-                border: 1px solid #eee;
+                padding: 8px;
+                border: 1px solid #ddd;
                 border-radius: 4px;
-            }
-            td input:focus {
-                border-color: #007bff;
-                outline: none;
             }
             
             /* Adjustments for read-only fields */
@@ -186,13 +185,16 @@
                 border: none;
                 font-weight: 700;
                 color: #007bff;
-                font-size: 16px;
+                font-size: 18px; /* 폰트 키움 */
+                text-align: right;
             }
             
             .total-box {
                 font-size: 1.2em;
                 text-align: center;
                 background-color: #d4edda;
+                margin-top: 30px;
+                padding: 20px;
             }
         }
     </style>
