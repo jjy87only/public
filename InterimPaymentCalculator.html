@@ -71,10 +71,15 @@
             color: #555;
         }
         input {
-            padding: 8px;
+            padding: 6px 10px; /* Reduced padding for PC */
             border: 1px solid #ccc;
             border-radius: 4px;
             font-size: 14px;
+            height: 34px; /* Explicit compact height for PC */
+            box-sizing: border-box; /* Ensure padding doesn't add to height */
+        }
+        input[type="date"] {
+            height: 34px; /* Match height for date inputs */
         }
         table {
             width: 100%;
@@ -143,18 +148,18 @@
                 align-items: stretch;
                 gap: 15px;
             }
-            .input-group input {
-                width: 100%;
-                box-sizing: border-box;
-                padding: 12px;
-                font-size: 16px; /* iOS 자동 줌 방지 */
-            }
-            button {
-                width: 100%;
-                padding: 12px !important;
-                margin-top: 5px;
-                font-size: 16px;
-            }
+        .input-group input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            font-size: 16px; /* iOS 자동 줌 방지 */
+        }
+        button {
+            width: 100%;
+            padding: 12px !important;
+            margin-top: 5px;
+            font-size: 16px;
+        }
 
             /* Mobile View Switcher */
             .pc-view {
@@ -282,7 +287,7 @@
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${index + 1}회차</td>
-                    <td><input type="date" class="start-date" value="${data.date}" onchange="calculateRow(${index})"></td>
+                    <td><input type="date" class="start-date" value="${data.date}" readonly style="background-color: #e9ecef; color: #666; cursor: not-allowed;"></td>
                     <td><input type="number" class="amount money-input" value="${defaultAmt}" oninput="calculateRow(${index})"></td>
                     <td><input type="number" class="rate" step="0.01" value="${data.rate}" oninput="calculateRow(${index})"></td>
                     <td><span class="days-count" id="days-${index}">0</span>일</td>
@@ -297,7 +302,7 @@
                     <div class="card-header">${index + 1}회차</div>
                     <div class="card-row">
                         <label>기산일</label>
-                        <input type="date" class="m-start-date" value="${data.date}" onchange="syncToPC(${index}, 'date', this.value)">
+                        <input type="date" class="m-start-date" value="${data.date}" readonly style="background-color: #e9ecef; color: #666; cursor: not-allowed;">
                     </div>
                     <div class="card-row">
                         <label>중도금</label>
