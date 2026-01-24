@@ -11,6 +11,7 @@
         /* iOS Reset & Base Styles */
         html {
             -webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape */
+            overscroll-behavior: none; /* 상하좌우 스크롤 바운스(통통 튀는 효과) 제거 */
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, 'Malgun Gothic', sans-serif;
@@ -19,6 +20,10 @@
             padding: 20px;
             display: flex;
             justify-content: center;
+            overscroll-behavior: none; /* 바운스 제거 이중 적용 */
+            overflow-x: hidden; /* 가로 스크롤 흔들림 방지 */
+            width: 100%; /* 너비 고정 */
+            box-sizing: border-box;
         }
         /* Reset Input Styles for iOS */
         input, button, select, textarea {
