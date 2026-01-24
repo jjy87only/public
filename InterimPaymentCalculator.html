@@ -143,74 +143,52 @@
                 font-size: 16px;
             }
 
-            /* Table Responsive - Card View transformation */
-            table, thead, tbody, th, td, tr {
-                display: block;
-                width: 100%; /* 너비 100% 강제 */
-                box-sizing: border-box; /* 패딩 포함 너비 계산 */
+            /* Mobile View Switcher */
+            .pc-view {
+                display: none !important; /* PC 테이블 완전 숨김 */
             }
-            thead {
-                display: none; /* 헤더 숨김 처리 (모바일) */
+            .mobile-view {
+                display: block; /* 모바일 리스트 보임 */
             }
-            tbody {
-                display: block;
-                width: 100%;
-            }
-            tr {
-                margin-bottom: 20px;
+
+            .mobile-card {
+                background-color: #fff;
                 border: 1px solid #e0e0e0;
                 border-radius: 12px;
                 padding: 15px;
-                background-color: #fff;
-                box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-                display: block; /* tr도 블록 요소로 */
+                margin-bottom: 15px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.02);
             }
-            td {
-                border: none;
-                position: relative;
-                padding: 10px 0;
+            .card-header {
+                font-size: 16px;
+                font-weight: bold;
+                color: #333;
+                border-bottom: 2px solid #007bff;
+                padding-bottom: 8px;
+                margin-bottom: 12px;
+            }
+            .card-row {
                 display: flex;
-                justify-content: space-between; /* 좌우 정렬 */
-                align-items: center; /* 수직 중앙 정렬 */
-                border-bottom: 1px solid #f0f0f0;
-                text-align: right; /* 텍스트 우측 정렬 */
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 10px;
+                padding-bottom: 10px;
+                border-bottom: 1px solid #f9f9f9;
             }
-            td:last-child {
+            .card-row:last-child {
                 border-bottom: none;
+                margin-bottom: 0;
                 padding-bottom: 0;
             }
-            
-            /* Labels for Card View */
-            /* ::before 가상 요소를 사용하여 라벨 표시 */
-            td:nth-of-type(1)::before { content: "회차"; font-weight: 600; color: #555; font-size: 14px; margin-right: auto; }
-            td:nth-of-type(2)::before { content: "기산일"; font-weight: 600; color: #555; font-size: 14px; margin-right: auto; }
-            td:nth-of-type(3)::before { content: "중도금 (원)"; font-weight: 600; color: #555; font-size: 14px; margin-right: auto; }
-            td:nth-of-type(4)::before { content: "연 이율 (%)"; font-weight: 600; color: #555; font-size: 14px; margin-right: auto; }
-            td:nth-of-type(5)::before { content: "경과 일수"; font-weight: 600; color: #555; font-size: 14px; margin-right: auto; }
-            td:nth-of-type(6)::before { content: "예상 이자"; font-weight: 600; color: #555; font-size: 14px; margin-right: auto; }
-
-            /* Input styling in card view */
-            td input {
-                width: 60%;
-                font-size: 16px;
-                box-sizing: border-box;
-                text-align: right;
-                padding: 8px;
-                border: 1px solid #ddd;
-                border-radius: 4px;
-                background-color: #fff; /* iOS input background fix */
-                -webkit-appearance: none; /* Ensure reset applies here too */
+            .card-row label {
+                font-size: 14px;
+                color: #555;
+                font-weight: 600;
             }
-            
-            /* Adjustments for read-only fields */
-            .read-only {
-                width: auto;
-                background: transparent;
-                border: none;
-                font-weight: 700;
-                color: #007bff;
-                font-size: 18px; /* 폰트 키움 */
+            .card-row input, .card-row span {
+                width: 60%;
                 text-align: right;
+                font-size: 16px;
             }
             
             .total-box {
@@ -221,6 +199,15 @@
                 padding: 20px;
             }
         }
+
+        /* PC Styles (Default) */
+        .mobile-view {
+            display: none; /* PC에서는 모바일 리스트 숨김 */
+        }
+        .pc-view {
+            display: table; /* PC에서는 테이블 보임 */
+        }
+    </style>
     </style>
 </head>
 <body>
@@ -240,7 +227,8 @@
         <button onclick="applyDefaultAmount()" style="padding: 9px 15px; background-color: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;">금액 일괄 적용</button>
     </div>
 
-    <table>
+    <!-- PC Table View -->
+    <table class="pc-view">
         <thead>
             <tr>
                 <th width="10%">회차</th>
@@ -252,111 +240,175 @@
             </tr>
         </thead>
         <tbody id="tableBody">
-            </tbody>
+        </tbody>
     </table>
+
+    <!-- Mobile Card List View -->
+    <div id="mobileList" class="mobile-view">
+        <!-- Cards will be generated here -->
+    </div>
 
     <div class="total-box">
         총 대출 이자 합계: <span id="totalInterest">0</span> 원
     </div>
 </div>
 
-<script>
-    // 초기 데이터 (엑셀 파일 기반)
-    const initialData = [
-        { date: '2023-11-24', rate: 4.81 },
-        { date: '2024-04-24', rate: 4.81 },
-        { date: '2024-09-24', rate: 4.38 },
-        { date: '2025-02-24', rate: 4.21 },
-        { date: '2025-07-24', rate: 3.54 },
-        { date: '2025-12-24', rate: 3.41 }
-    ];
+    <script>
+        // 초기 데이터 (엑셀 파일 기반)
+        const initialData = [
+            { date: '2023-11-24', rate: 4.81 },
+            { date: '2024-04-24', rate: 4.81 },
+            { date: '2024-09-24', rate: 4.38 },
+            { date: '2025-02-24', rate: 4.21 },
+            { date: '2025-07-24', rate: 3.54 },
+            { date: '2025-12-24', rate: 3.41 }
+        ];
 
-    function initTable() {
-        const tbody = document.getElementById('tableBody');
-        const defaultAmt = document.getElementById('defaultAmount').value;
+        function initTable() {
+            const tbody = document.getElementById('tableBody');
+            const mobileList = document.getElementById('mobileList');
+            const defaultAmt = document.getElementById('defaultAmount').value;
 
-        initialData.forEach((data, index) => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${index + 1}회차</td>
-                <td><input type="date" class="start-date" value="${data.date}" onchange="calculateRow(${index})"></td>
-                <td><input type="number" class="amount money-input" value="${defaultAmt}" oninput="calculateRow(${index})"></td>
-                <td><input type="number" class="rate" step="0.01" value="${data.rate}" oninput="calculateRow(${index})"></td>
-                <td><span class="days-count" id="days-${index}">0</span>일</td>
-                <td><input type="text" class="interest read-only" id="interest-${index}" readonly></td>
-            `;
-            tbody.appendChild(row);
-        });
-        calculateAll();
-    }
+            // Clear existing content
+            tbody.innerHTML = '';
+            mobileList.innerHTML = '';
 
-    function applyDefaultAmount() {
-        const defaultAmt = document.getElementById('defaultAmount').value;
-        const amounts = document.querySelectorAll('.amount');
-        amounts.forEach((input, index) => {
-            input.value = defaultAmt;
-            calculateRow(index);
-        });
-        calculateAll();
-    }
+            initialData.forEach((data, index) => {
+                // PC Table Row
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}회차</td>
+                    <td><input type="date" class="start-date" value="${data.date}" onchange="calculateRow(${index})"></td>
+                    <td><input type="number" class="amount money-input" value="${defaultAmt}" oninput="calculateRow(${index})"></td>
+                    <td><input type="number" class="rate" step="0.01" value="${data.rate}" oninput="calculateRow(${index})"></td>
+                    <td><span class="days-count" id="days-${index}">0</span>일</td>
+                    <td><input type="text" class="interest read-only" id="interest-${index}" readonly></td>
+                `;
+                tbody.appendChild(row);
 
-    function calculateRow(index) {
-        const finalDateVal = document.getElementById('finalDate').value;
-        const startDateVal = document.getElementsByClassName('start-date')[index].value;
-        const amountVal = parseFloat(document.getElementsByClassName('amount')[index].value) || 0;
-        const rateVal = parseFloat(document.getElementsByClassName('rate')[index].value) || 0;
-
-        if (finalDateVal && startDateVal) {
-            const finalDate = new Date(finalDateVal);
-            const startDate = new Date(startDateVal);
-            
-            // 일수 계산 (밀리초 단위를 일 단위로 변환)
-            const diffTime = finalDate - startDate;
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-            document.getElementById(`days-${index}`).innerText = diffDays > 0 ? diffDays : 0;
-
-            if (diffDays > 0) {
-                // 이자 계산 공식: 원금 * (이율/100) * (일수/365)
-                const interest = amountVal * (rateVal / 100) * (diffDays / 365);
-                // 소수점 버림 및 콤마 포맷팅
-                document.getElementById(`interest-${index}`).value = Math.floor(interest).toLocaleString();
-                document.getElementById(`interest-${index}`).dataset.value = interest; // 계산용 실제 값 저장
-            } else {
-                document.getElementById(`interest-${index}`).value = 0;
-                document.getElementById(`interest-${index}`).dataset.value = 0;
-            }
+                // Mobile Card Item
+                const card = document.createElement('div');
+                card.className = 'mobile-card';
+                card.innerHTML = `
+                    <div class="card-header">${index + 1}회차</div>
+                    <div class="card-row">
+                        <label>기산일</label>
+                        <input type="date" class="m-start-date" value="${data.date}" onchange="syncToPC(${index}, 'date', this.value)">
+                    </div>
+                    <div class="card-row">
+                        <label>중도금</label>
+                        <input type="number" class="m-amount" value="${defaultAmt}" oninput="syncToPC(${index}, 'amount', this.value)">
+                    </div>
+                    <div class="card-row">
+                        <label>이율(%)</label>
+                        <input type="number" class="m-rate" step="0.01" value="${data.rate}" oninput="syncToPC(${index}, 'rate', this.value)">
+                    </div>
+                    <div class="card-row">
+                        <label>경과일</label>
+                        <span class="m-days-count" id="m-days-${index}">0일</span>
+                    </div>
+                    <div class="card-row">
+                        <label>예상 이자</label>
+                        <input type="text" class="m-interest read-only" id="m-interest-${index}" readonly>
+                    </div>
+                `;
+                mobileList.appendChild(card);
+            });
+            calculateAll();
         }
-        updateTotal();
-    }
 
-    function calculateAll() {
-        const rows = document.querySelectorAll('#tableBody tr');
-        rows.forEach((row, index) => {
+        function syncToPC(index, type, value) {
+            // 모바일 입력 -> PC 테이블로 값 복사 후 계산 호출
+            if (type === 'date') document.getElementsByClassName('start-date')[index].value = value;
+            if (type === 'amount') document.getElementsByClassName('amount')[index].value = value;
+            if (type === 'rate') document.getElementsByClassName('rate')[index].value = value;
             calculateRow(index);
-        });
-    }
+        }
 
-    function updateTotal() {
-        const interests = document.querySelectorAll('.interest');
-        let total = 0;
-        interests.forEach(input => {
-            total += parseFloat(input.dataset.value) || 0;
-        });
-        document.getElementById('totalInterest').innerText = Math.floor(total).toLocaleString();
-    }
+        function applyDefaultAmount() {
+            const defaultAmt = document.getElementById('defaultAmount').value;
+            // PC apply
+            const amounts = document.querySelectorAll('.amount');
+            amounts.forEach((input, index) => {
+                input.value = defaultAmt;
+            });
+            // Mobile apply
+            const mAmounts = document.querySelectorAll('.m-amount');
+            mAmounts.forEach((input) => {
+                input.value = defaultAmt;
+            });
+            
+            calculateAll();
+        }
 
-    // 페이지 로드 시 초기화 보장 (아이폰/모바일 호환성 강화)
-    function startApp() {
-        initTable();
-    }
+        function calculateRow(index) {
+            const finalDateVal = document.getElementById('finalDate').value;
+            // Get values from PC inputs (as source of truth)
+            const startDateVal = document.getElementsByClassName('start-date')[index].value;
+            const amountVal = parseFloat(document.getElementsByClassName('amount')[index].value) || 0;
+            const rateVal = parseFloat(document.getElementsByClassName('rate')[index].value) || 0;
 
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', startApp);
-    } else {
-        startApp(); // 이미 로드되었으면 즉시 실행
-    }
-</script>
+            let diffDays = 0;
+            let interest = 0;
+
+            if (finalDateVal && startDateVal) {
+                const finalDate = new Date(finalDateVal);
+                const startDate = new Date(startDateVal);
+                
+                const diffTime = finalDate - startDate;
+                diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                diffDays = diffDays > 0 ? diffDays : 0;
+
+                if (diffDays > 0) {
+                    interest = amountVal * (rateVal / 100) * (diffDays / 365);
+                }
+            }
+
+            // Update PC View
+            document.getElementById(`days-${index}`).innerText = diffDays;
+            document.getElementById(`interest-${index}`).value = Math.floor(interest).toLocaleString();
+            document.getElementById(`interest-${index}`).dataset.value = interest;
+
+            // Update Mobile View (Sync back)
+            const mStartDates = document.getElementsByClassName('m-start-date');
+            if(mStartDates[index]) mStartDates[index].value = startDateVal;
+
+            const mAmounts = document.getElementsByClassName('m-amount');
+            if(mAmounts[index]) mAmounts[index].value = amountVal; // Sync amount back (for default apply)
+
+            document.getElementById(`m-days-${index}`).innerText = diffDays + "일";
+            document.getElementById(`m-interest-${index}`).value = Math.floor(interest).toLocaleString();
+
+            updateTotal();
+        }
+
+        function calculateAll() {
+            const rows = document.querySelectorAll('#tableBody tr');
+            rows.forEach((row, index) => {
+                calculateRow(index);
+            });
+        }
+
+        function updateTotal() {
+            const interests = document.querySelectorAll('.interest');
+            let total = 0;
+            interests.forEach(input => {
+                total += parseFloat(input.dataset.value) || 0;
+            });
+            document.getElementById('totalInterest').innerText = Math.floor(total).toLocaleString();
+        }
+
+        // 페이지 로드 시 초기화 보장 (아이폰/모바일 호환성 강화)
+        function startApp() {
+            initTable();
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', startApp);
+        } else {
+            startApp();
+        }
+    </script>
 
 </body>
 </html>
