@@ -527,8 +527,8 @@
             .rate-item input[type="number"] { flex: 1; text-align: right; } /* 1:1 Ratio, Right Align */
             .btn-delete { 
                 height: 44px;
-                width: auto; 
-                padding: 0 16px;
+                width: 65px; 
+                padding: 0;
                 font-size: 0.9rem;
                 flex-shrink: 0;
             }
@@ -598,6 +598,16 @@
     <section class="card">
         <div class="section-header">
             <h3>📝 회차별 납입 정보</h3>
+        </div>
+
+        <!-- Mobile Installment Headers -->
+        <div class="mobile-view" style="display: none; padding: 0 4px; margin-bottom: 8px;">
+            <div style="display: flex; gap: 8px;">
+                <div style="width: 45px;"></div> <!-- Spacer for 회차 -->
+                <label style="flex: 1; text-align: center; color: #64748b; font-size: 0.85rem; font-weight: 600; margin: 0;">기산일</label>
+                <label style="flex: 1; text-align: center; color: #64748b; font-size: 0.85rem; font-weight: 600; margin: 0;">중도금액 (원)</label>
+                <div style="width: 50px;"></div> <!-- Spacer for 일수 -->
+            </div>
         </div>
 
         <!-- PC Table View -->
@@ -755,19 +765,18 @@
             // Mobile Card Item
             const card = document.createElement('div');
             card.className = 'mobile-card';
+            card.style.padding = '10px 4px'; // More compact
             card.innerHTML = `
-                <div class="card-header">
-                    <span>${index + 1}회차</span>
-                    <span class="days-count" id="m-days-${index}" style="font-size: 0.8rem;">0일</span>
-                </div>
-                <div class="card-body-row">
-                    <div class="input-wrapper date-wrapper">
-                        <label>기산일</label>
-                        <input type="date" class="m-start-date" value="${date}" onchange="syncToPC(${index}, 'date', this.value)">
+                <div class="card-body-row" style="display: flex; gap: 8px; align-items: center;">
+                    <div style="width: 45px; font-weight: 700; color: var(--primary); font-size: 0.85rem; text-align: center;">${index + 1}회</div>
+                    <div class="input-wrapper" style="flex: 1;">
+                        <input type="date" class="m-start-date" value="${date}" onchange="syncToPC(${index}, 'date', this.value)" style="text-align: center; height: 40px; padding: 0 4px; font-size: 0.9rem;">
                     </div>
-                    <div class="input-wrapper amount-wrapper">
-                        <label>중도금</label>
-                        <input type="number" class="m-amount" value="${defaultAmt}" oninput="syncToPC(${index}, 'amount', this.value)">
+                    <div class="input-wrapper" style="flex: 1;">
+                        <input type="number" class="m-amount money-input" value="${defaultAmt}" oninput="syncToPC(${index}, 'amount', this.value)" style="text-align: right; height: 40px; padding: 0 8px; font-size: 0.9rem;">
+                    </div>
+                    <div style="width: 50px; text-align: center;">
+                        <span class="days-count" id="m-days-${index}" style="font-size: 0.7rem; padding: 3px 2px; min-width: 40px; text-align: center;">0일</span>
                     </div>
                 </div>
                 <input type="hidden" class="m-interest" id="m-interest-${index}" readonly>
