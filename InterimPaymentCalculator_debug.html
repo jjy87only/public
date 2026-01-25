@@ -389,7 +389,8 @@
             }
             .control-panel button {
                 width: 100%;
-                padding: 14px;
+                height: 44px;
+                padding: 0 16px;
                 font-size: 1rem;
             }
 
@@ -398,13 +399,31 @@
                 gap: 8px;
                 margin-bottom: 8px;
             }
+            .settings-input-row input {
+                height: 44px;
+                padding: 0 12px;
+                font-size: 0.95rem;
+            }
             .settings-input-row input[type="date"] { flex: 1; text-align: center; }
             .settings-input-row input[type="number"] { flex: 1; text-align: right; }
-            .settings-input-row button { width: auto !important; padding: 0 12px; font-size: 0.85rem; }
+            .settings-input-row button { 
+                width: auto !important; 
+                height: 44px;
+                padding: 0 16px; 
+                font-size: 0.95rem; 
+                flex-shrink: 0;
+            }
             
             .settings-header-row {
                 display: flex !important;
                 gap: 8px;
+            }
+            .settings-header-row label {
+                flex: 1;
+                font-size: 0.8rem !important;
+            }
+            .settings-header-row div {
+                width: 80px; /* Reduced spacer to match button */
             }
 
             .pc-view { display: none !important; }
@@ -467,7 +486,8 @@
 
             .input-wrapper input {
                 width: 100%;
-                padding: 12px;
+                height: 44px;
+                padding: 0 12px;
                 font-size: 1rem;
                 background-color: #f8fafc;
                 border: 1px solid #e2e8f0;
@@ -498,9 +518,20 @@
                 gap: 8px;
                 margin-bottom: 8px;
             }
+            .rate-item input {
+                height: 44px;
+                padding: 0 12px;
+                font-size: 0.95rem;
+            }
             .rate-item input[type="date"] { flex: 1; text-align: center; } /* 1:1 Ratio */
             .rate-item input[type="number"] { flex: 1; text-align: right; } /* 1:1 Ratio, Right Align */
-            .btn-delete { width: auto; padding: 0 12px; }
+            .btn-delete { 
+                height: 44px;
+                width: auto; 
+                padding: 0 16px;
+                font-size: 0.9rem;
+                flex-shrink: 0;
+            }
 
             .mobile-ledger-card {
                 margin: 0;
@@ -527,16 +558,16 @@
         </div>
         
         <!-- Settings Headers -->
-        <div class="settings-header-row" style="display: flex; gap: 12px; margin-bottom: 8px; padding: 0 4px;">
+        <div class="settings-header-row" style="display: flex; gap: 8px; margin-bottom: 8px; padding: 0 4px;">
             <label style="flex: 1; text-align: center; color: #64748b; font-size: 0.85rem; font-weight: 600;">잔금일 (만기일)</label>
             <label style="flex: 1; text-align: center; color: #64748b; font-size: 0.85rem; font-weight: 600;">기본 중도금액 (원)</label>
-            <div style="width: 110px;"></div> <!-- Spacer for button -->
+            <div class="btn-spacer" style="width: 85px;"></div> <!-- Spacer for button -->
         </div>
         
-        <div class="settings-input-row" style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 12px; align-items: center;">
+        <div class="settings-input-row" style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px; align-items: center;">
             <input type="date" id="finalDate" value="2026-06-01" onchange="calculateAll()">
             <input type="number" id="defaultAmount" class="money-input" value="39890000" onchange="applyDefaultAmount()">
-            <button onclick="applyDefaultAmount()" class="btn-primary" style="width: 110px;">일괄 적용</button>
+            <button onclick="applyDefaultAmount()" class="btn-primary" style="width: 85px;">일괄 적용</button>
         </div>
     </section>
 
@@ -555,7 +586,7 @@
         <div class="rate-header-row" style="display: flex; gap: 8px; margin-bottom: 8px; padding: 0 4px;">
             <label style="flex: 1; text-align: center; color: #64748b; font-size: 0.85rem; font-weight: 600;">금리적용일</label>
             <label style="flex: 1; text-align: center; color: #64748b; font-size: 0.85rem; font-weight: 600;">적용금리 (%)</label>
-            <div style="width: 58px;"></div> <!-- Spacer for delete button -->
+            <div class="btn-spacer" style="width: 65px;"></div> <!-- Spacer for delete button -->
         </div>
 
         <div id="rateHistoryList" class="rate-list">
