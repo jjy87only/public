@@ -377,6 +377,25 @@
                 text-align: right;
                 padding: 8px;
             }
+
+            .rate-item {
+                grid-template-columns: 1fr; /* Stack inputs on mobile */
+                gap: 8px;
+            }
+            .rate-item input[type="date"], 
+            .rate-item input[type="number"] {
+                width: 100%;
+            }
+            .btn-delete {
+                width: 100%; /* Full width delete button */
+                margin-top: 4px;
+            }
+
+            /* Adjust table font size for mobile specific tables if needed */
+            .consolidated-table th, .consolidated-table td {
+                padding: 8px 4px;
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
