@@ -585,15 +585,96 @@
           flex-shrink: 0;
         }
 
-        .mobile-ledger-card {
-          margin: 0;
-          border-radius: 0;
-          border: none;
-          border-bottom: 1px solid var(--border);
-          box-shadow: none;
-        }
         .mobile-ledger-card:last-child {
           border-bottom: none;
+        }
+
+        /* Added Classes for Refactoring */
+        .header-row {
+          display: flex;
+          gap: 8px;
+          margin-bottom: 8px;
+          padding: 0 4px;
+        }
+        .header-label {
+          flex: 1;
+          text-align: center;
+          color: #64748b;
+          font-size: 0.85rem;
+          font-weight: 600;
+          margin: 0;
+        }
+        .input-grid-3 {
+          display: grid;
+          grid-template-columns: 1fr 1fr auto;
+          gap: 8px;
+          align-items: center;
+        }
+        .w-85 {
+          width: 85px;
+        }
+        .w-65 {
+          width: 65px;
+        }
+        .w-50 {
+          width: 50px;
+        }
+        .w-45 {
+          width: 45px;
+        }
+
+        .tip-box {
+          background-color: #fffbeb;
+          color: #b45309;
+          padding: 12px;
+          border-radius: 6px;
+          font-size: 0.85rem;
+          margin-bottom: 16px;
+          display: flex;
+          align-items: start;
+          gap: 8px;
+        }
+
+        .installment-number {
+          font-weight: 600;
+          color: var(--primary);
+        }
+
+        .mobile-installment-card {
+          padding: 10px 4px !important;
+        }
+        .mobile-installment-card-body {
+          display: flex;
+          gap: 8px;
+          align-items: center;
+        }
+        .m-installment-number {
+          width: 45px;
+          font-weight: 700;
+          color: var(--primary);
+          font-size: 0.85rem;
+          text-align: center;
+        }
+        .installment-input-small {
+          text-align: center;
+          height: 40px;
+          padding: 0 4px;
+          font-size: 0.9rem;
+        }
+        .installment-amount-small {
+          text-align: right;
+          height: 40px;
+          padding: 0 8px;
+          font-size: 0.9rem;
+        }
+        .installment-days-small {
+          font-size: 0.7rem;
+          padding: 3px 2px;
+          min-width: 40px;
+          text-align: center;
+        }
+        .flex-1 {
+          flex: 1;
         }
       }
     </style>
@@ -611,48 +692,20 @@
         </div>
 
         <!-- Settings Headers -->
-        <div
-          class="settings-header-row"
-          style="display: flex; gap: 8px; margin-bottom: 8px; padding: 0 4px"
-        >
-          <label
-            style="
-              flex: 1;
-              text-align: center;
-              color: #64748b;
-              font-size: 0.85rem;
-              font-weight: 600;
-            "
-            >잔금일 (만기일)</label
-          >
-          <label
-            style="
-              flex: 1;
-              text-align: center;
-              color: #64748b;
-              font-size: 0.85rem;
-              font-weight: 600;
-            "
-            >기본 중도금액 (원)</label
-          >
-          <div class="btn-spacer" style="width: 85px"></div>
-          <!-- Spacer for button -->
+        <div class="settings-header-row header-row">
+          <label class="header-label">잔금일 (만기일)</label>
+          <label class="header-label">기본 중도금액 (원)</label>
+          <div class="btn-spacer w-85"></div>
         </div>
 
-        <div
-          class="settings-input-row"
-          style="
-            display: grid;
-            grid-template-columns: 1fr 1fr auto;
-            gap: 8px;
-            align-items: center;
-          "
-        >
+        <div class="settings-input-row input-grid-3">
           <input
             type="date"
             id="finalDate"
             value="2026-05-14"
             onchange="calculateAll()"
+            title="잔금일"
+            placeholder="YYYY-MM-DD"
           />
           <input
             type="number"
@@ -660,12 +713,10 @@
             class="money-input"
             value="39890000"
             onchange="applyDefaultAmount()"
+            title="기본 중도금액"
+            placeholder="금액 입력"
           />
-          <button
-            onclick="applyDefaultAmount()"
-            class="btn-primary"
-            style="width: 85px"
-          >
+          <button onclick="applyDefaultAmount()" class="btn-primary w-85">
             일괄 적용
           </button>
         </div>
@@ -679,19 +730,7 @@
             + 구간 추가
           </button>
         </div>
-        <div
-          style="
-            background-color: #fffbeb;
-            color: #b45309;
-            padding: 12px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: start;
-            gap: 8px;
-          "
-        >
+        <div class="tip-box">
           <span>💡</span>
           <span
             >금리가 변경된 날짜(시작일)와 이율을 입력하세요. 해당 기간 동안의
@@ -700,32 +739,10 @@
         </div>
 
         <!-- Rate Headers (Mobile/PC Common or specific) -->
-        <div
-          class="rate-header-row"
-          style="display: flex; gap: 8px; margin-bottom: 8px; padding: 0 4px"
-        >
-          <label
-            style="
-              flex: 1;
-              text-align: center;
-              color: #64748b;
-              font-size: 0.85rem;
-              font-weight: 600;
-            "
-            >금리적용일</label
-          >
-          <label
-            style="
-              flex: 1;
-              text-align: center;
-              color: #64748b;
-              font-size: 0.85rem;
-              font-weight: 600;
-            "
-            >적용금리 (%)</label
-          >
-          <div class="btn-spacer" style="width: 65px"></div>
-          <!-- Spacer for delete button -->
+        <div class="rate-header-row header-row">
+          <label class="header-label">금리적용일</label>
+          <label class="header-label">적용금리 (%)</label>
+          <div class="btn-spacer w-65"></div>
         </div>
 
         <div id="rateHistoryList" class="rate-list">
@@ -740,38 +757,11 @@
         </div>
 
         <!-- Mobile Installment Headers -->
-        <div
-          class="mobile-view"
-          style="display: none; padding: 0 4px; margin-bottom: 8px"
-        >
-          <div style="display: flex; gap: 8px">
-            <div style="width: 45px"></div>
-            <!-- Spacer for 회차 -->
-            <label
-              style="
-                flex: 1;
-                text-align: center;
-                color: #64748b;
-                font-size: 0.85rem;
-                font-weight: 600;
-                margin: 0;
-              "
-              >기산일</label
-            >
-            <label
-              style="
-                flex: 1;
-                text-align: center;
-                color: #64748b;
-                font-size: 0.85rem;
-                font-weight: 600;
-                margin: 0;
-              "
-              >중도금액 (원)</label
-            >
-            <div style="width: 50px"></div>
-            <!-- Spacer for 일수 -->
-          </div>
+        <div class="mobile-view header-row">
+          <div class="w-45"></div>
+          <label class="header-label">기산일</label>
+          <label class="header-label">중도금액 (원)</label>
+          <div class="w-50"></div>
         </div>
 
         <!-- PC Table View -->
@@ -869,8 +859,8 @@
           const div = document.createElement("div");
           div.className = "rate-item";
           div.innerHTML = `
-                <input type="date" value="${item.date}" onchange="updateRateHistory(${index}, 'date', this.value)">
-                <input type="number" step="0.01" class="money-input" value="${item.rate}" onchange="updateRateHistory(${index}, 'rate', this.value)" placeholder="금리 %">
+                <input type="date" value="${item.date}" onchange="updateRateHistory(${index}, 'date', this.value)" title="금리 적용일" placeholder="YYYY-MM-DD">
+                <input type="number" step="0.01" class="money-input" value="${item.rate}" onchange="updateRateHistory(${index}, 'rate', this.value)" title="적용 금리" placeholder="금리 %">
                 <button class="btn-delete" onclick="deleteRateHistoryRow(${index})">삭제</button>
             `;
           container.appendChild(div);
@@ -921,9 +911,9 @@
           // PC Table Row
           const row = document.createElement("tr");
           row.innerHTML = `
-                <td class="center" style="font-weight: 600; color: var(--primary);">${index + 1}회차</td>
-                <td><input type="date" class="start-date" value="${date}" onchange="calculateRow(${index})"></td>
-                <td><input type="number" class="amount money-input" value="${defaultAmt}" oninput="calculateRow(${index})"></td>
+                <td class="center installment-number">${index + 1}회차</td>
+                <td><input type="date" class="start-date" value="${date}" onchange="calculateRow(${index})" title="${index + 1}회차 기산일"></td>
+                <td><input type="number" class="amount money-input" value="${defaultAmt}" oninput="calculateRow(${index})" title="${index + 1}회차 중도금액" placeholder="금액"></td>
                 <td class="center"><span class="days-count" id="days-${index}">0</span>일</td>
                 <input type="hidden" class="interest" id="interest-${index}" readonly>
             `;
@@ -931,19 +921,18 @@
 
           // Mobile Card Item
           const card = document.createElement("div");
-          card.className = "mobile-card";
-          card.style.padding = "10px 4px"; // More compact
+          card.className = "mobile-card mobile-installment-card";
           card.innerHTML = `
-                <div class="card-body-row" style="display: flex; gap: 8px; align-items: center;">
-                    <div style="width: 45px; font-weight: 700; color: var(--primary); font-size: 0.85rem; text-align: center;">${index + 1}회</div>
-                    <div class="input-wrapper" style="flex: 1;">
-                        <input type="date" class="m-start-date" value="${date}" onchange="syncToPC(${index}, 'date', this.value)" style="text-align: center; height: 40px; padding: 0 4px; font-size: 0.9rem;">
+                <div class="mobile-installment-card-body">
+                    <div class="m-installment-number">${index + 1}회</div>
+                    <div class="input-wrapper flex-1">
+                        <input type="date" class="m-start-date installment-input-small" value="${date}" onchange="syncToPC(${index}, 'date', this.value)" title="${index + 1}회차 기산일 (모바일)">
                     </div>
-                    <div class="input-wrapper" style="flex: 1;">
-                        <input type="number" class="m-amount money-input" value="${defaultAmt}" oninput="syncToPC(${index}, 'amount', this.value)" style="text-align: right; height: 40px; padding: 0 8px; font-size: 0.9rem;">
+                    <div class="input-wrapper flex-1">
+                        <input type="number" class="m-amount money-input installment-amount-small" value="${defaultAmt}" oninput="syncToPC(${index}, 'amount', this.value)" title="${index + 1}회차 중도금액 (모바일)" placeholder="금액">
                     </div>
-                    <div style="width: 50px; text-align: center;">
-                        <span class="days-count" id="m-days-${index}" style="font-size: 0.7rem; padding: 3px 2px; min-width: 40px; text-align: center;">0일</span>
+                    <div class="w-50 center">
+                        <span class="days-count installment-days-small" id="m-days-${index}">0일</span>
                     </div>
                 </div>
                 <input type="hidden" class="m-interest" id="m-interest-${index}" readonly>
