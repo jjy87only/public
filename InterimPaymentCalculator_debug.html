@@ -1,772 +1,939 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>아파트 중도금 대출 이자 계산기</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --bg-page: #f8fafc;
-            --bg-card: #ffffff;
-            --text-main: #1e293b;
-            --text-sub: #64748b;
-            --border: #e2e8f0;
-            --danger: #ef4444;
-            --success: #10b981;
-        }
+      :root {
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --bg-page: #f8fafc;
+        --bg-card: #ffffff;
+        --text-main: #1e293b;
+        --text-sub: #64748b;
+        --border: #e2e8f0;
+        --danger: #ef4444;
+        --success: #10b981;
+      }
 
-        * {
-            box-sizing: border-box;
-            outline: none;
-        }
+      * {
+        box-sizing: border-box;
+        outline: none;
+      }
 
+      body {
+        font-family:
+          "Inter",
+          -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
+        background-color: var(--bg-page);
+        color: var(--text-main);
+        margin: 0;
+        padding: 20px;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      @media (max-width: 768px) {
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: var(--bg-page);
-            color: var(--text-main);
-            margin: 0;
-            padding: 20px;
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        @media (max-width: 768px) {
-            body { padding: 0; background-color: #f8fafc; } /* Remove body padding on mobile */
-            .container { gap: 0; max-width: 100%; margin: 0; }
-            .card {
-                border-radius: 0;
-                border-left: none;
-                border-right: none;
-                box-shadow: none;
-                margin-bottom: 8px; /* Gap between sections */
-                padding: 20px 16px;
-            }
-            .mobile-card, .mobile-ledger-card {
-                border-radius: 0;
-                border-left: none;
-                border-right: none;
-                margin-bottom: 8px;
-                box-shadow: none;
-                border-top: 1px solid var(--border);
-                border-bottom: 1px solid var(--border);
-            }
-            header {
-                padding: 16px;
-                background: white;
-                margin-bottom: 8px;
-                border-bottom: 1px solid var(--border);
-            }
-        }
-
+          padding: 0;
+          background-color: #f8fafc;
+        } /* Remove body padding on mobile */
         .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
+          gap: 0;
+          max-width: 100%;
+          margin: 0;
         }
-
-        /* Header */
-        header {
-            text-align: center;
-            margin-bottom: 10px;
-        }
-
-        h2 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-main);
-            margin: 0;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        h3 {
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: var(--text-main);
-            margin: 0;
-        }
-
-        /* Cards */
         .card {
-            background-color: var(--bg-card);
-            border-radius: 12px;
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
-            border: 1px solid var(--border);
-            padding: 24px;
+          border-radius: 0;
+          border-left: none;
+          border-right: none;
+          box-shadow: none;
+          margin-bottom: 8px; /* Gap between sections */
+          padding: 20px 16px;
+        }
+        .mobile-card,
+        .mobile-ledger-card {
+          border-radius: 0;
+          border-left: none;
+          border-right: none;
+          margin-bottom: 8px;
+          box-shadow: none;
+          border-top: 1px solid var(--border);
+          border-bottom: 1px solid var(--border);
+        }
+        header {
+          padding: 16px;
+          background: white;
+          margin-bottom: 8px;
+          border-bottom: 1px solid var(--border);
+        }
+      }
+
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      /* Header */
+      header {
+        text-align: center;
+        margin-bottom: 10px;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-main);
+        margin: 0;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      h3 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: var(--text-main);
+        margin: 0;
+      }
+
+      /* Cards */
+      .card {
+        background-color: var(--bg-card);
+        border-radius: 12px;
+        box-shadow:
+          0 1px 3px 0 rgba(0, 0, 0, 0.1),
+          0 1px 2px -1px rgba(0, 0, 0, 0.06);
+        border: 1px solid var(--border);
+        padding: 24px;
+      }
+
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      /* Inputs */
+      input {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-size: 0.95rem;
+        transition: all 0.2s;
+        background-color: #f8fafc; /* Light grey background for modern look */
+        color: var(--text-main);
+      }
+
+      input:focus {
+        background-color: #fff;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+
+      input[type="date"] {
+        font-family: inherit;
+        text-align: center;
+      }
+
+      input[type="number"] {
+        text-align: right;
+      }
+
+      label {
+        display: block;
+        font-weight: 500;
+        font-size: 0.875rem;
+        color: var(--text-sub);
+        margin-bottom: 6px;
+      }
+
+      /* Buttons */
+      button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 16px;
+        font-weight: 500;
+        font-size: 0.875rem;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .btn-primary {
+        background-color: var(--text-sub);
+        color: white;
+      }
+      .btn-primary:hover {
+        background-color: #475569;
+      }
+
+      .btn-add {
+        background-color: #ecfdf5;
+        color: var(--success);
+        padding: 6px 12px;
+        font-size: 0.8rem;
+      }
+      .btn-add:hover {
+        background-color: #d1fae5;
+      }
+
+      .btn-delete {
+        background-color: #fef2f2;
+        color: var(--danger);
+        padding: 8px 12px;
+      }
+      .btn-delete:hover {
+        background-color: #fee2e2;
+      }
+
+      /* Control Panel Grid */
+      .control-panel {
+        display: grid;
+        grid-template-columns: 1fr 1fr auto;
+        gap: 20px;
+        align-items: end;
+      }
+
+      /* Rate History */
+      .rate-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .rate-item {
+        display: grid;
+        grid-template-columns: 1fr 1fr auto;
+        gap: 12px;
+        align-items: center;
+      }
+
+      /* Table Styles */
+      .table-container {
+        overflow-x: auto;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+      }
+
+      table {
+        width: 100%;
+        min-width: 700px; /* Increased to prevent crushing */
+        border-collapse: collapse;
+        font-size: 0.95rem;
+        table-layout: fixed; /* Enforce column widths */
+      }
+
+      .consolidated-table {
+        min-width: 900px; /* Needs more space for many columns */
+      }
+
+      th,
+      td {
+        white-space: nowrap; /* Prevent text wrapping */
+      }
+
+      th {
+        background-color: #f8fafc;
+        color: var(--text-sub);
+        font-weight: 600;
+        text-align: center;
+        padding: 12px 16px;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        border-bottom: 1px solid var(--border);
+      }
+
+      td {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--border);
+        color: var(--text-main);
+      }
+
+      tr:last-child td {
+        border-bottom: none;
+      }
+
+      .money-input {
+        font-weight: 600;
+        color: var(--text-main);
+        text-align: right;
+      }
+
+      .days-count {
+        display: inline-block;
+        padding: 4px 8px;
+        background-color: #f1f5f9;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--text-sub);
+      }
+
+      .center {
+        text-align: center;
+      }
+      .right {
+        text-align: right;
+      }
+
+      /* Consolidated Table Specifics */
+      .consolidated-table th {
+        background-color: #eff6ff; /* Light blue header */
+        color: #1e40af;
+      }
+      .consolidated-table tr:hover {
+        background-color: #f8fafc;
+      }
+      .total-row {
+        background-color: #f0fdf4 !important;
+      }
+      .total-row td {
+        font-weight: 700;
+        color: #15803d;
+        font-size: 1rem;
+      }
+
+      .mobile-ledger-card {
+        background-color: #fff;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 12px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .ledger-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #f1f5f9;
+        padding-bottom: 10px;
+      }
+
+      .ledger-date {
+        font-weight: 700;
+        color: var(--text-main);
+        font-size: 1rem;
+      }
+
+      .ledger-amount {
+        font-weight: 700;
+        color: var(--primary);
+        font-size: 1.1rem;
+      }
+
+      .ledger-body {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        font-size: 0.85rem;
+        color: var(--text-sub);
+      }
+
+      .ledger-row {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .ledger-label {
+        font-size: 0.75rem;
+        color: #94a3b8;
+        margin-bottom: 2px;
+      }
+
+      .ledger-value {
+        font-weight: 500;
+        color: var(--text-main);
+      }
+
+      .ledger-footer {
+        background-color: #f8fafc;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        color: var(--text-sub);
+        margin-top: 4px;
+      }
+
+      /* Mobile View Switching */
+      .mobile-view {
+        display: none;
+      }
+      .pc-view {
+        display: table;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        body {
+          padding: 0 !important;
+          background-color: #f1f5f9;
+        }
+        .container {
+          gap: 10px;
+          padding-bottom: 40px;
         }
 
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--border);
+        header {
+          background: white;
+          padding: 16px;
+          margin: 0;
+          text-align: left;
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+        header h2 {
+          font-size: 1.25rem;
         }
 
-        /* Inputs */
-        input {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 0.95rem;
-            transition: all 0.2s;
-            background-color: #f8fafc; /* Light grey background for modern look */
-            color: var(--text-main);
+        .card {
+          border-radius: 0;
+          border-left: none;
+          border-right: none;
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+          margin: 0;
+          padding: 20px 16px;
         }
 
-        input:focus {
-            background-color: #fff;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-
-        input[type="date"] {
-            font-family: inherit;
-            text-align: center;
-        }
-
-        input[type="number"] {
-            text-align: right;
-        }
-
-        label {
-            display: block;
-            font-weight: 500;
-            font-size: 0.875rem;
-            color: var(--text-sub);
-            margin-bottom: 6px;
-        }
-
-        /* Buttons */
-        button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 10px 16px;
-            font-weight: 500;
-            font-size: 0.875rem;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-primary {
-            background-color: var(--text-sub);
-            color: white;
-        }
-        .btn-primary:hover {
-            background-color: #475569;
-        }
-
-        .btn-add {
-            background-color: #ecfdf5;
-            color: var(--success);
-            padding: 6px 12px;
-            font-size: 0.8rem;
-        }
-        .btn-add:hover {
-            background-color: #d1fae5;
-        }
-
-        .btn-delete {
-            background-color: #fef2f2;
-            color: var(--danger);
-            padding: 8px 12px;
-        }
-        .btn-delete:hover {
-            background-color: #fee2e2;
-        }
-
-        /* Control Panel Grid */
         .control-panel {
-            display: grid;
-            grid-template-columns: 1fr 1fr auto;
-            gap: 20px;
-            align-items: end;
+          grid-template-columns: 1fr;
+          gap: 16px;
+        }
+        .control-panel button {
+          width: 100%;
+          height: 44px;
+          padding: 0 16px;
+          font-size: 1rem;
         }
 
-        /* Rate History */
-        .rate-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+        .settings-input-row {
+          display: flex !important;
+          gap: 8px;
+          margin-bottom: 8px;
+        }
+        .settings-input-row input {
+          height: 44px;
+          padding: 0 12px;
+          font-size: 0.95rem;
+        }
+        .settings-input-row input[type="date"] {
+          flex: 1;
+          text-align: center;
+        }
+        .settings-input-row input[type="number"] {
+          flex: 1;
+          text-align: right;
+        }
+        .settings-input-row button {
+          width: auto !important;
+          height: 44px;
+          padding: 0 16px;
+          font-size: 0.95rem;
+          flex-shrink: 0;
         }
 
+        .settings-header-row {
+          display: flex !important;
+          gap: 8px;
+        }
+        .settings-header-row label {
+          flex: 1;
+          font-size: 0.8rem !important;
+        }
+        .settings-header-row div {
+          width: 80px; /* Reduced spacer to match button */
+        }
+
+        .pc-view {
+          display: none !important;
+        }
+        .mobile-view {
+          display: block !important;
+        }
+
+        .mobile-card {
+          background: white;
+          border: 1px solid var(--border);
+          border-radius: 12px;
+          padding: 20px;
+          margin: 0; /* Remove margin to make it flush inside section */
+          box-shadow: none;
+          border: none;
+          border-bottom: 1px solid var(--border);
+          border-radius: 0;
+        }
+        .mobile-card:last-child {
+          border-bottom: none;
+        }
+
+        .card-header {
+          font-weight: 700;
+          color: var(--primary);
+          margin-bottom: 16px;
+          padding-bottom: 0;
+          border-bottom: none;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 1.1rem;
+        }
+
+        .card-body-row {
+          display: flex;
+          flex-direction: row; /* Horizontal layout for columns */
+          gap: 12px;
+          align-items: flex-end; /* Align bottoms if heights differ, or stretch */
+        }
+
+        .input-wrapper {
+          display: flex;
+          flex-direction: column; /* Label on top of Input */
+          gap: 6px;
+          flex: 1; /* Equal width 1:1 */
+        }
+
+        .date-wrapper {
+          flex: 1; /* 1:1 Ratio */
+        }
+        .amount-wrapper {
+          flex: 1; /* 1:1 Ratio */
+        }
+
+        .input-wrapper label {
+          font-size: 0.85rem;
+          color: #64748b;
+          font-weight: 600;
+          margin: 0;
+          width: 100%; /* Full width */
+          text-align: left;
+        }
+
+        .input-wrapper input {
+          width: 100%;
+          height: 44px;
+          padding: 0 12px;
+          font-size: 1rem;
+          background-color: #f8fafc;
+          border: 1px solid #e2e8f0;
+          border-radius: 8px;
+          /* Reset previous styles */
+          flex: none;
+        }
+
+        .date-wrapper input {
+          text-align: center;
+        }
+
+        .amount-wrapper input {
+          text-align: right;
+        }
+
+        /* Old card-row styles removal or override if needed, but keeping for compatibility if used elsewhere */
+        .card-row {
+          display: none; /* Hide old rows if any remain */
+        }
+        .card-row input:focus {
+          background-color: #fff;
+        }
+
+        /* Rate items mobile */
         .rate-item {
-            display: grid;
-            grid-template-columns: 1fr 1fr auto;
-            gap: 12px;
-            align-items: center;
+          display: flex;
+          gap: 8px;
+          margin-bottom: 8px;
         }
-
-        /* Table Styles */
-        .table-container {
-            overflow-x: auto;
-            border-radius: 8px;
-            border: 1px solid var(--border);
+        .rate-item input {
+          height: 44px;
+          padding: 0 12px;
+          font-size: 0.95rem;
         }
-
-        table {
-            width: 100%;
-            min-width: 700px; /* Increased to prevent crushing */
-            border-collapse: collapse;
-            font-size: 0.95rem;
-            table-layout: fixed; /* Enforce column widths */
-        }
-
-        .consolidated-table {
-            min-width: 900px; /* Needs more space for many columns */
-        }
-
-        th, td {
-            white-space: nowrap; /* Prevent text wrapping */
-        }
-
-        th {
-            background-color: #f8fafc;
-            color: var(--text-sub);
-            font-weight: 600;
-            text-align: center;
-            padding: 12px 16px;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            border-bottom: 1px solid var(--border);
-        }
-
-        td {
-            padding: 14px 16px;
-            border-bottom: 1px solid var(--border);
-            color: var(--text-main);
-        }
-
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        .money-input {
-            font-weight: 600;
-            color: var(--text-main);
-            text-align: right;
-        }
-        
-        .days-count {
-            display: inline-block;
-            padding: 4px 8px;
-            background-color: #f1f5f9;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: var(--text-sub);
-        }
-
-        .center { text-align: center; }
-        .right { text-align: right; }
-
-        /* Consolidated Table Specifics */
-        .consolidated-table th {
-            background-color: #eff6ff; /* Light blue header */
-            color: #1e40af;
-        }
-        .consolidated-table tr:hover {
-            background-color: #f8fafc;
-        }
-        .total-row {
-            background-color: #f0fdf4 !important;
-        }
-        .total-row td {
-            font-weight: 700;
-            color: #15803d;
-            font-size: 1rem;
+        .rate-item input[type="date"] {
+          flex: 1;
+          text-align: center;
+        } /* 1:1 Ratio */
+        .rate-item input[type="number"] {
+          flex: 1;
+          text-align: right;
+        } /* 1:1 Ratio, Right Align */
+        .btn-delete {
+          height: 44px;
+          width: 65px;
+          padding: 0;
+          font-size: 0.9rem;
+          flex-shrink: 0;
         }
 
         .mobile-ledger-card {
-            background-color: #fff;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 12px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+          margin: 0;
+          border-radius: 0;
+          border: none;
+          border-bottom: 1px solid var(--border);
+          box-shadow: none;
         }
-        
-        .ledger-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #f1f5f9;
-            padding-bottom: 10px;
+        .mobile-ledger-card:last-child {
+          border-bottom: none;
         }
-        
-        .ledger-date {
-            font-weight: 700;
-            color: var(--text-main);
-            font-size: 1rem;
-        }
-        
-        .ledger-amount {
-            font-weight: 700;
-            color: var(--primary);
-            font-size: 1.1rem;
-        }
-        
-        .ledger-body {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            font-size: 0.85rem;
-            color: var(--text-sub);
-        }
-        
-        .ledger-row {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .ledger-label {
-            font-size: 0.75rem;
-            color: #94a3b8;
-            margin-bottom: 2px;
-        }
-        
-        .ledger-value {
-            font-weight: 500;
-            color: var(--text-main);
-        }
-
-        .ledger-footer {
-            background-color: #f8fafc;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            color: var(--text-sub);
-            margin-top: 4px;
-        }
-
-        /* Mobile View Switching */
-        .mobile-view { display: none; }
-        .pc-view { display: table; }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            body { padding: 0 !important; background-color: #f1f5f9; }
-            .container { gap: 10px; padding-bottom: 40px; }
-            
-            header {
-                background: white;
-                padding: 16px;
-                margin: 0;
-                text-align: left;
-                box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-            }
-            header h2 { font-size: 1.25rem; }
-
-            .card {
-                border-radius: 0;
-                border-left: none;
-                border-right: none;
-                box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-                margin: 0;
-                padding: 20px 16px;
-            }
-            
-            .control-panel {
-                grid-template-columns: 1fr;
-                gap: 16px;
-            }
-            .control-panel button {
-                width: 100%;
-                height: 44px;
-                padding: 0 16px;
-                font-size: 1rem;
-            }
-
-            .settings-input-row {
-                display: flex !important;
-                gap: 8px;
-                margin-bottom: 8px;
-            }
-            .settings-input-row input {
-                height: 44px;
-                padding: 0 12px;
-                font-size: 0.95rem;
-            }
-            .settings-input-row input[type="date"] { flex: 1; text-align: center; }
-            .settings-input-row input[type="number"] { flex: 1; text-align: right; }
-            .settings-input-row button { 
-                width: auto !important; 
-                height: 44px;
-                padding: 0 16px; 
-                font-size: 0.95rem; 
-                flex-shrink: 0;
-            }
-            
-            .settings-header-row {
-                display: flex !important;
-                gap: 8px;
-            }
-            .settings-header-row label {
-                flex: 1;
-                font-size: 0.8rem !important;
-            }
-            .settings-header-row div {
-                width: 80px; /* Reduced spacer to match button */
-            }
-
-            .pc-view { display: none !important; }
-            .mobile-view { display: block !important; }
-
-            .mobile-card {
-                background: white;
-                border: 1px solid var(--border);
-                border-radius: 12px;
-                padding: 20px;
-                margin: 0; /* Remove margin to make it flush inside section */
-                box-shadow: none;
-                border: none;
-                border-bottom: 1px solid var(--border);
-                border-radius: 0;
-            }
-            .mobile-card:last-child { border-bottom: none; }
-
-            .card-header {
-                font-weight: 700;
-                color: var(--primary);
-                margin-bottom: 16px;
-                padding-bottom: 0;
-                border-bottom: none;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                font-size: 1.1rem;
-            }
-
-            .card-body-row {
-                display: flex;
-                flex-direction: row; /* Horizontal layout for columns */
-                gap: 12px;
-                align-items: flex-end; /* Align bottoms if heights differ, or stretch */
-            }
-            
-            .input-wrapper {
-                display: flex;
-                flex-direction: column; /* Label on top of Input */
-                gap: 6px;
-                flex: 1; /* Equal width 1:1 */
-            }
-            
-            .date-wrapper {
-                flex: 1; /* 1:1 Ratio */
-            }
-            .amount-wrapper {
-                flex: 1; /* 1:1 Ratio */
-            }
-
-            .input-wrapper label {
-                font-size: 0.85rem;
-                color: #64748b;
-                font-weight: 600;
-                margin: 0;
-                width: 100%; /* Full width */
-                text-align: left;
-            }
-
-            .input-wrapper input {
-                width: 100%;
-                height: 44px;
-                padding: 0 12px;
-                font-size: 1rem;
-                background-color: #f8fafc;
-                border: 1px solid #e2e8f0;
-                border-radius: 8px;
-                /* Reset previous styles */
-                flex: none; 
-            }
-            
-            .date-wrapper input {
-                text-align: center;
-            }
-            
-            .amount-wrapper input {
-                text-align: right;
-            }
-
-            /* Old card-row styles removal or override if needed, but keeping for compatibility if used elsewhere */
-            .card-row {
-                display: none; /* Hide old rows if any remain */
-            }
-            .card-row input:focus {
-                background-color: #fff;
-            }
-
-            /* Rate items mobile */
-            .rate-item {
-                display: flex;
-                gap: 8px;
-                margin-bottom: 8px;
-            }
-            .rate-item input {
-                height: 44px;
-                padding: 0 12px;
-                font-size: 0.95rem;
-            }
-            .rate-item input[type="date"] { flex: 1; text-align: center; } /* 1:1 Ratio */
-            .rate-item input[type="number"] { flex: 1; text-align: right; } /* 1:1 Ratio, Right Align */
-            .btn-delete { 
-                height: 44px;
-                width: 65px; 
-                padding: 0;
-                font-size: 0.9rem;
-                flex-shrink: 0;
-            }
-
-            .mobile-ledger-card {
-                margin: 0;
-                border-radius: 0;
-                border: none;
-                border-bottom: 1px solid var(--border);
-                box-shadow: none;
-            }
-            .mobile-ledger-card:last-child { border-bottom: none; }
-        }
+      }
     </style>
-</head>
-<body>
-
-<div class="container">
-    <header>
+  </head>
+  <body>
+    <div class="container">
+      <header>
         <h2>🏠 아파트 중도금 대출 이자 계산기</h2>
-    </header>
+      </header>
 
-    <!-- Settings Card -->
-    <section class="card">
+      <!-- Settings Card -->
+      <section class="card">
         <div class="section-header">
-            <h3>⚙️ 기본 설정</h3>
+          <h3>⚙️ 기본 설정</h3>
         </div>
-        
+
         <!-- Settings Headers -->
-        <div class="settings-header-row" style="display: flex; gap: 8px; margin-bottom: 8px; padding: 0 4px;">
-            <label style="flex: 1; text-align: center; color: #64748b; font-size: 0.85rem; font-weight: 600;">잔금일 (만기일)</label>
-            <label style="flex: 1; text-align: center; color: #64748b; font-size: 0.85rem; font-weight: 600;">기본 중도금액 (원)</label>
-            <div class="btn-spacer" style="width: 85px;"></div> <!-- Spacer for button -->
+        <div
+          class="settings-header-row"
+          style="display: flex; gap: 8px; margin-bottom: 8px; padding: 0 4px"
+        >
+          <label
+            style="
+              flex: 1;
+              text-align: center;
+              color: #64748b;
+              font-size: 0.85rem;
+              font-weight: 600;
+            "
+            >잔금일 (만기일)</label
+          >
+          <label
+            style="
+              flex: 1;
+              text-align: center;
+              color: #64748b;
+              font-size: 0.85rem;
+              font-weight: 600;
+            "
+            >기본 중도금액 (원)</label
+          >
+          <div class="btn-spacer" style="width: 85px"></div>
+          <!-- Spacer for button -->
         </div>
-        
-        <div class="settings-input-row" style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px; align-items: center;">
-            <input type="date" id="finalDate" value="2026-06-01" onchange="calculateAll()">
-            <input type="number" id="defaultAmount" class="money-input" value="39890000" onchange="applyDefaultAmount()">
-            <button onclick="applyDefaultAmount()" class="btn-primary" style="width: 85px;">일괄 적용</button>
-        </div>
-    </section>
 
-    <!-- Rate History Card -->
-    <section class="card">
+        <div
+          class="settings-input-row"
+          style="
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 8px;
+            align-items: center;
+          "
+        >
+          <input
+            type="date"
+            id="finalDate"
+            value="2026-06-01"
+            onchange="calculateAll()"
+          />
+          <input
+            type="number"
+            id="defaultAmount"
+            class="money-input"
+            value="39890000"
+            onchange="applyDefaultAmount()"
+          />
+          <button
+            onclick="applyDefaultAmount()"
+            class="btn-primary"
+            style="width: 85px"
+          >
+            일괄 적용
+          </button>
+        </div>
+      </section>
+
+      <!-- Rate History Card -->
+      <section class="card">
         <div class="section-header">
-            <h3>📉 변동금리 이력</h3>
-            <button class="btn-add" onclick="addRateHistoryRow()">+ 구간 추가</button>
+          <h3>📉 변동금리 이력</h3>
+          <button class="btn-add" onclick="addRateHistoryRow()">
+            + 구간 추가
+          </button>
         </div>
-        <div style="background-color: #fffbeb; color: #b45309; padding: 12px; border-radius: 6px; font-size: 0.85rem; margin-bottom: 16px; display: flex; align-items: start; gap: 8px;">
-            <span>💡</span>
-            <span>금리가 변경된 날짜(시작일)와 이율을 입력하세요. 해당 기간 동안의 모든 대출금 잔액에 대해 해당 금리가 적용됩니다.</span>
+        <div
+          style="
+            background-color: #fffbeb;
+            color: #b45309;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: start;
+            gap: 8px;
+          "
+        >
+          <span>💡</span>
+          <span
+            >금리가 변경된 날짜(시작일)와 이율을 입력하세요. 해당 기간 동안의
+            모든 대출금 잔액에 대해 해당 금리가 적용됩니다.</span
+          >
         </div>
-        
+
         <!-- Rate Headers (Mobile/PC Common or specific) -->
-        <div class="rate-header-row" style="display: flex; gap: 8px; margin-bottom: 8px; padding: 0 4px;">
-            <label style="flex: 1; text-align: center; color: #64748b; font-size: 0.85rem; font-weight: 600;">금리적용일</label>
-            <label style="flex: 1; text-align: center; color: #64748b; font-size: 0.85rem; font-weight: 600;">적용금리 (%)</label>
-            <div class="btn-spacer" style="width: 65px;"></div> <!-- Spacer for delete button -->
+        <div
+          class="rate-header-row"
+          style="display: flex; gap: 8px; margin-bottom: 8px; padding: 0 4px"
+        >
+          <label
+            style="
+              flex: 1;
+              text-align: center;
+              color: #64748b;
+              font-size: 0.85rem;
+              font-weight: 600;
+            "
+            >금리적용일</label
+          >
+          <label
+            style="
+              flex: 1;
+              text-align: center;
+              color: #64748b;
+              font-size: 0.85rem;
+              font-weight: 600;
+            "
+            >적용금리 (%)</label
+          >
+          <div class="btn-spacer" style="width: 65px"></div>
+          <!-- Spacer for delete button -->
         </div>
 
         <div id="rateHistoryList" class="rate-list">
-            <!-- Dynamic Rate Rows -->
+          <!-- Dynamic Rate Rows -->
         </div>
-    </section>
+      </section>
 
-    <!-- Installments Card -->
-    <section class="card">
+      <!-- Installments Card -->
+      <section class="card">
         <div class="section-header">
-            <h3>📝 회차별 납입 정보</h3>
+          <h3>📝 회차별 납입 정보</h3>
         </div>
 
         <!-- Mobile Installment Headers -->
-        <div class="mobile-view" style="display: none; padding: 0 4px; margin-bottom: 8px;">
-            <div style="display: flex; gap: 8px;">
-                <div style="width: 45px;"></div> <!-- Spacer for 회차 -->
-                <label style="flex: 1; text-align: center; color: #64748b; font-size: 0.85rem; font-weight: 600; margin: 0;">기산일</label>
-                <label style="flex: 1; text-align: center; color: #64748b; font-size: 0.85rem; font-weight: 600; margin: 0;">중도금액 (원)</label>
-                <div style="width: 50px;"></div> <!-- Spacer for 일수 -->
-            </div>
+        <div
+          class="mobile-view"
+          style="display: none; padding: 0 4px; margin-bottom: 8px"
+        >
+          <div style="display: flex; gap: 8px">
+            <div style="width: 45px"></div>
+            <!-- Spacer for 회차 -->
+            <label
+              style="
+                flex: 1;
+                text-align: center;
+                color: #64748b;
+                font-size: 0.85rem;
+                font-weight: 600;
+                margin: 0;
+              "
+              >기산일</label
+            >
+            <label
+              style="
+                flex: 1;
+                text-align: center;
+                color: #64748b;
+                font-size: 0.85rem;
+                font-weight: 600;
+                margin: 0;
+              "
+              >중도금액 (원)</label
+            >
+            <div style="width: 50px"></div>
+            <!-- Spacer for 일수 -->
+          </div>
         </div>
 
         <!-- PC Table View -->
         <div class="table-container pc-view">
-            <table>
-                <thead>
-                    <tr>
-                        <th width="15%">회차</th>
-                        <th width="35%">기산일 (대출실행일)</th>
-                        <th width="35%">중도금 액수 (원)</th>
-                        <th width="15%">일수</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
-                    <!-- Dynamic Rows -->
-                </tbody>
-            </table>
+          <table>
+            <thead>
+              <tr>
+                <th width="15%">회차</th>
+                <th width="35%">기산일 (대출실행일)</th>
+                <th width="35%">중도금 액수 (원)</th>
+                <th width="15%">일수</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <!-- Dynamic Rows -->
+            </tbody>
+          </table>
         </div>
 
         <!-- Mobile Card List View -->
         <div id="mobileList" class="mobile-view">
-            <!-- Dynamic Cards -->
+          <!-- Dynamic Cards -->
         </div>
-    </section>
+      </section>
 
-    <!-- Consolidated Ledger Card -->
-    <section class="card">
+      <!-- Consolidated Ledger Card -->
+      <section class="card">
         <div class="section-header">
-            <h3>📅 통합 월별 이자 납입 내역 (영업일 기준)</h3>
+          <h3>📅 통합 월별 이자 납입 내역 (영업일 기준)</h3>
         </div>
-        
+
         <!-- PC Table View -->
         <div class="table-container pc-view">
-            <table class="consolidated-table">
-                <thead>
-                    <tr>
-                        <th width="12%">납부일</th>
-                        <th width="12%">시작일</th>
-                        <th width="12%">종료일</th>
-                        <th width="8%">일수</th>
-                        <th width="15%">납부 이자액</th>
-                        <th width="10%">금리</th>
-                        <th width="20%">비고</th>
-                    </tr>
-                </thead>
-                <tbody id="consolidatedBody">
-                    <!-- Dynamic Rows -->
-                </tbody>
-            </table>
+          <table class="consolidated-table">
+            <thead>
+              <tr>
+                <th width="12%">납부일</th>
+                <th width="12%">시작일</th>
+                <th width="12%">종료일</th>
+                <th width="8%">일수</th>
+                <th width="15%">납부 이자액</th>
+                <th width="10%">금리</th>
+                <th width="20%">비고</th>
+              </tr>
+            </thead>
+            <tbody id="consolidatedBody">
+              <!-- Dynamic Rows -->
+            </tbody>
+          </table>
         </div>
 
         <!-- Mobile Card View -->
         <div id="mobileLedgerList" class="mobile-view">
-            <!-- Dynamic Ledger Cards -->
+          <!-- Dynamic Ledger Cards -->
         </div>
-    </section>
-</div>
+      </section>
+    </div>
 
-<script>
-    // 초기 데이터 (회차별 날짜)
-    const initialInstallments = [
-        '2023-11-24', 
-        '2024-04-24', 
-        '2024-09-24', 
-        '2025-02-24', 
-        '2025-07-24', 
-        '2025-12-24'
-    ];
+    <script>
+      // 초기 데이터 (회차별 날짜)
+      const initialInstallments = [
+        "2023-11-24",
+        "2024-04-24",
+        "2024-09-24",
+        "2025-02-24",
+        "2025-07-24",
+        "2025-12-24",
+      ];
 
-        // 금리 변동 이력
-        let rateHistory = [
-            { date: '2023-11-24', rate: 4.81 },
-            { date: '2024-05-24', rate: 4.38 },
-            { date: '2024-11-24', rate: 4.21 },
-            { date: '2025-05-24', rate: 3.54 },
-            { date: '2025-11-24', rate: 3.41 }
-        ];
+      // 금리 변동 이력
+      let rateHistory = [
+        { date: "2023-11-24", rate: 4.81 },
+        { date: "2024-05-24", rate: 4.38 },
+        { date: "2024-11-24", rate: 4.21 },
+        { date: "2025-05-24", rate: 3.54 },
+        { date: "2025-11-24", rate: 3.41 },
+      ];
 
-        function initTable() {
-            renderRateHistory();
-            renderInstallmentTable();
-            
-            setTimeout(() => {
-                calculateAll();
-            }, 100);
-        }
+      function initTable() {
+        renderRateHistory();
+        renderInstallmentTable();
 
-    function renderRateHistory() {
-        const container = document.getElementById('rateHistoryList');
-        container.innerHTML = '';
-        
+        setTimeout(() => {
+          calculateAll();
+        }, 100);
+      }
+
+      function renderRateHistory() {
+        const container = document.getElementById("rateHistoryList");
+        container.innerHTML = "";
+
         rateHistory.sort((a, b) => new Date(a.date) - new Date(b.date));
-        
+
         rateHistory.forEach((item, index) => {
-            const div = document.createElement('div');
-            div.className = 'rate-item';
-            div.innerHTML = `
+          const div = document.createElement("div");
+          div.className = "rate-item";
+          div.innerHTML = `
                 <input type="date" value="${item.date}" onchange="updateRateHistory(${index}, 'date', this.value)">
                 <input type="number" step="0.01" class="money-input" value="${item.rate}" onchange="updateRateHistory(${index}, 'rate', this.value)" placeholder="금리 %">
                 <button class="btn-delete" onclick="deleteRateHistoryRow(${index})">삭제</button>
             `;
-            container.appendChild(div);
+          container.appendChild(div);
         });
-    }
+      }
 
-    function addRateHistoryRow() {
-        const lastDate = rateHistory.length > 0 ? rateHistory[rateHistory.length-1].date : '2024-01-01';
+      function addRateHistoryRow() {
+        const lastDate =
+          rateHistory.length > 0
+            ? rateHistory[rateHistory.length - 1].date
+            : "2024-01-01";
         let nextDate = new Date(lastDate);
         nextDate.setMonth(nextDate.getMonth() + 1);
-        
+
         rateHistory.push({
-            date: nextDate.toISOString().split('T')[0],
-            rate: 4.0
+          date: nextDate.toISOString().split("T")[0],
+          rate: 4.0,
         });
         renderRateHistory();
         calculateAll();
-    }
+      }
 
-    function deleteRateHistoryRow(index) {
+      function deleteRateHistoryRow(index) {
         if (rateHistory.length <= 1) {
-            alert("최소 하나의 금리 구간은 필요합니다.");
-            return;
+          alert("최소 하나의 금리 구간은 필요합니다.");
+          return;
         }
         rateHistory.splice(index, 1);
         renderRateHistory();
         calculateAll();
-    }
+      }
 
-    function updateRateHistory(index, field, value) {
-        if (field === 'rate') value = parseFloat(value);
+      function updateRateHistory(index, field, value) {
+        if (field === "rate") value = parseFloat(value);
         rateHistory[index][field] = value;
         calculateAll();
-    }
+      }
 
-    function renderInstallmentTable() {
-        const tbody = document.getElementById('tableBody');
-        const mobileList = document.getElementById('mobileList');
-        const defaultAmt = document.getElementById('defaultAmount').value;
+      function renderInstallmentTable() {
+        const tbody = document.getElementById("tableBody");
+        const mobileList = document.getElementById("mobileList");
+        const defaultAmt = document.getElementById("defaultAmount").value;
 
-        tbody.innerHTML = '';
-        mobileList.innerHTML = '';
+        tbody.innerHTML = "";
+        mobileList.innerHTML = "";
 
         initialInstallments.forEach((date, index) => {
-            // PC Table Row
-            const row = document.createElement('tr');
-            row.innerHTML = `
+          // PC Table Row
+          const row = document.createElement("tr");
+          row.innerHTML = `
                 <td class="center" style="font-weight: 600; color: var(--primary);">${index + 1}회차</td>
                 <td><input type="date" class="start-date" value="${date}" onchange="calculateRow(${index})"></td>
                 <td><input type="number" class="amount money-input" value="${defaultAmt}" oninput="calculateRow(${index})"></td>
                 <td class="center"><span class="days-count" id="days-${index}">0</span>일</td>
                 <input type="hidden" class="interest" id="interest-${index}" readonly>
             `;
-            tbody.appendChild(row);
+          tbody.appendChild(row);
 
-            // Mobile Card Item
-            const card = document.createElement('div');
-            card.className = 'mobile-card';
-            card.style.padding = '10px 4px'; // More compact
-            card.innerHTML = `
+          // Mobile Card Item
+          const card = document.createElement("div");
+          card.className = "mobile-card";
+          card.style.padding = "10px 4px"; // More compact
+          card.innerHTML = `
                 <div class="card-body-row" style="display: flex; gap: 8px; align-items: center;">
                     <div style="width: 45px; font-weight: 700; color: var(--primary); font-size: 0.85rem; text-align: center;">${index + 1}회</div>
                     <div class="input-wrapper" style="flex: 1;">
@@ -781,166 +948,221 @@
                 </div>
                 <input type="hidden" class="m-interest" id="m-interest-${index}" readonly>
             `;
-            mobileList.appendChild(card);
+          mobileList.appendChild(card);
         });
         calculateAll();
-    }
+      }
 
-    function syncToPC(index, type, value) {
-        if (type === 'date') document.getElementsByClassName('start-date')[index].value = value;
-        if (type === 'amount') document.getElementsByClassName('amount')[index].value = value;
+      function syncToPC(index, type, value) {
+        if (type === "date")
+          document.getElementsByClassName("start-date")[index].value = value;
+        if (type === "amount")
+          document.getElementsByClassName("amount")[index].value = value;
         calculateRow(index);
-    }
+      }
 
-    function applyDefaultAmount() {
-        const defaultAmt = document.getElementById('defaultAmount').value;
-        const amounts = document.querySelectorAll('.amount');
+      function applyDefaultAmount() {
+        const defaultAmt = document.getElementById("defaultAmount").value;
+        const amounts = document.querySelectorAll(".amount");
         amounts.forEach((input, index) => {
-            input.value = defaultAmt;
+          input.value = defaultAmt;
         });
-        const mAmounts = document.querySelectorAll('.m-amount');
+        const mAmounts = document.querySelectorAll(".m-amount");
         mAmounts.forEach((input) => {
-            input.value = defaultAmt;
+          input.value = defaultAmt;
         });
-        
+
         calculateAll();
-    }
+      }
 
-    function formatDate(dateObj) {
+      function formatDate(dateObj) {
         const y = dateObj.getFullYear();
-        const m = String(dateObj.getMonth() + 1).padStart(2, '0');
-        const d = String(dateObj.getDate()).padStart(2, '0');
+        const m = String(dateObj.getMonth() + 1).padStart(2, "0");
+        const d = String(dateObj.getDate()).padStart(2, "0");
         return `${y}.${m}.${d}`;
-    }
+      }
 
-    function isLeapYear(year) {
-        return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
-    }
+      function isLeapYear(year) {
+        return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+      }
 
-    function getDaysInYear(date) {
+      function getDaysInYear(date) {
         const year = date.getFullYear();
         return isLeapYear(year) ? 366 : 365;
-    }
+      }
 
-    function getNextBusinessDay(date) {
+      function getNextBusinessDay(date) {
         let d = new Date(date);
-        
-        if (d.getFullYear() === 2023 && d.getMonth() === 11 && d.getDate() === 25) {
-            d.setDate(d.getDate() + 1);
+
+        if (
+          d.getFullYear() === 2023 &&
+          d.getMonth() === 11 &&
+          d.getDate() === 25
+        ) {
+          d.setDate(d.getDate() + 1);
         }
 
         const day = d.getDay();
-        if (day === 6) { // Saturday -> Monday
-            d.setDate(d.getDate() + 2);
-        } else if (day === 0) { // Sunday -> Monday
-            d.setDate(d.getDate() + 1);
+        if (day === 6) {
+          // Saturday -> Monday
+          d.setDate(d.getDate() + 2);
+        } else if (day === 0) {
+          // Sunday -> Monday
+          d.setDate(d.getDate() + 1);
         }
-        
-        if (d.getFullYear() === 2023 && d.getMonth() === 11 && d.getDate() === 25) {
-            d.setDate(d.getDate() + 1);
+
+        if (
+          d.getFullYear() === 2023 &&
+          d.getMonth() === 11 &&
+          d.getDate() === 25
+        ) {
+          d.setDate(d.getDate() + 1);
         }
-        
+
         return d;
-    }
+      }
 
-    function calculateConsolidatedLedger() {
-        const rows = document.querySelectorAll('#tableBody tr');
-        const defaultAmt = document.getElementById('defaultAmount').value;
-        const finalDateVal = document.getElementById('finalDate').value;
+      function calculateConsolidatedLedger() {
+        const rows = document.querySelectorAll("#tableBody tr");
+        const defaultAmt = document.getElementById("defaultAmount").value;
+        const finalDateVal = document.getElementById("finalDate").value;
         const finalDate = new Date(finalDateVal);
-        
+
         let allEvents = [];
-        
+
         initialInstallments.forEach((dateStr, index) => {
-            const startDateVal = document.getElementsByClassName('start-date')[index].value;
-            const amountVal = parseFloat(document.getElementsByClassName('amount')[index].value) || 0;
-            
-            if (!startDateVal || amountVal <= 0) return;
-            
-            const startDate = new Date(startDateVal);
-            if (startDate >= finalDate) return;
+          const startDateVal =
+            document.getElementsByClassName("start-date")[index].value;
+          const amountVal =
+            parseFloat(
+              document.getElementsByClassName("amount")[index].value,
+            ) || 0;
 
-            const sortedRates = [...rateHistory].sort((a, b) => new Date(a.date) - new Date(b.date));
-            
-            let currentDate = new Date(startDate);
-            let nextPaymentDate = new Date(startDate);
+          if (!startDateVal || amountVal <= 0) return;
+
+          const startDate = new Date(startDateVal);
+          if (startDate >= finalDate) return;
+
+          const sortedRates = [...rateHistory].sort(
+            (a, b) => new Date(a.date) - new Date(b.date),
+          );
+
+          let currentDate = new Date(startDate);
+          let nextPaymentDate = new Date(startDate);
+          nextPaymentDate.setMonth(nextPaymentDate.getMonth() + 1);
+
+          let loopLimit = 0;
+          while (nextPaymentDate <= finalDate && loopLimit < 1000) {
+            loopLimit++;
+
+            let periodStart = new Date(currentDate);
+            let periodEnd = new Date(nextPaymentDate);
+            periodEnd.setDate(periodEnd.getDate() - 1);
+
+            let actualPaymentDate = getNextBusinessDay(nextPaymentDate);
+
+            let calculationResult = calculatePeriodInterest(
+              amountVal,
+              periodStart,
+              periodEnd,
+              sortedRates,
+            );
+
+            allEvents.push({
+              paymentDate: actualPaymentDate,
+              periodStart: periodStart,
+              periodEnd: periodEnd,
+              interest: Math.floor(calculationResult.totalInterest),
+              rate: calculationResult.appliedRate,
+              installmentIndex: index + 1,
+            });
+
+            currentDate = new Date(nextPaymentDate);
             nextPaymentDate.setMonth(nextPaymentDate.getMonth() + 1);
-            
-            let loopLimit = 0;
-            while (nextPaymentDate <= finalDate && loopLimit < 1000) {
-                loopLimit++;
-                
-                let periodStart = new Date(currentDate);
-                let periodEnd = new Date(nextPaymentDate);
-                periodEnd.setDate(periodEnd.getDate() - 1);
-                
-                let actualPaymentDate = getNextBusinessDay(nextPaymentDate);
-                
-                let calculationResult = calculatePeriodInterest(amountVal, periodStart, periodEnd, sortedRates);
-                
-                allEvents.push({
-                    paymentDate: actualPaymentDate,
-                    periodStart: periodStart,
-                    periodEnd: periodEnd,
-                    interest: Math.floor(calculationResult.totalInterest),
-                    rate: calculationResult.appliedRate,
-                    installmentIndex: index + 1
-                });
+          }
 
-                currentDate = new Date(nextPaymentDate);
-                nextPaymentDate.setMonth(nextPaymentDate.getMonth() + 1);
+          // [추가된 로직] 잔여 기간 (마지막 월 납부 이후 ~ 잔금일) 이자 계산
+          // 예: 5월 24일이 마지막 정기 납부일이고, 6월 1일이 잔금일인 경우 -> 5월 24일 ~ 5월 31일치 이자 계산
+          if (currentDate < finalDate) {
+            let periodStart = new Date(currentDate);
+            let periodEnd = new Date(finalDate);
+            periodEnd.setDate(periodEnd.getDate() - 1); // 잔금 납부 전일까지를 이자 기간으로 산정
+
+            // 시작일이 종료일보다 앞서거나 같은 경우에만 계산 (유효 기간)
+            if (periodStart <= periodEnd) {
+              let calculationResult = calculatePeriodInterest(
+                amountVal,
+                periodStart,
+                periodEnd,
+                sortedRates,
+              );
+
+              allEvents.push({
+                paymentDate: finalDate, // 잔여 이자는 잔금일(만기일)에 납부
+                periodStart: periodStart,
+                periodEnd: periodEnd,
+                interest: Math.floor(calculationResult.totalInterest),
+                rate: calculationResult.appliedRate,
+                installmentIndex: index + 1,
+              });
             }
+          }
         });
 
         let grouped = {};
-        
-        allEvents.forEach(evt => {
-            const dateKey = evt.paymentDate.toISOString().split('T')[0];
-            if (!grouped[dateKey]) {
-                grouped[dateKey] = {
-                    dateObj: evt.paymentDate,
-                    periodStart: evt.periodStart, 
-                    periodEnd: evt.periodEnd,
-                    totalInterest: 0,
-                    rate: evt.rate,
-                    installments: []
-                };
-            }
-            
-            grouped[dateKey].totalInterest += evt.interest;
-            
-            if (!grouped[dateKey].installments.includes(evt.installmentIndex)) {
-                grouped[dateKey].installments.push(evt.installmentIndex);
-            }
+
+        allEvents.forEach((evt) => {
+          const dateKey = evt.paymentDate.toISOString().split("T")[0];
+          if (!grouped[dateKey]) {
+            grouped[dateKey] = {
+              dateObj: evt.paymentDate,
+              periodStart: evt.periodStart,
+              periodEnd: evt.periodEnd,
+              totalInterest: 0,
+              rate: evt.rate,
+              installments: [],
+            };
+          }
+
+          grouped[dateKey].totalInterest += evt.interest;
+
+          if (!grouped[dateKey].installments.includes(evt.installmentIndex)) {
+            grouped[dateKey].installments.push(evt.installmentIndex);
+          }
         });
-        
-        let sortedGroups = Object.values(grouped).sort((a, b) => a.dateObj - b.dateObj);
-        
-        const tbody = document.getElementById('consolidatedBody');
-        const mobileContainer = document.getElementById('mobileLedgerList');
-        
-        tbody.innerHTML = '';
-        mobileContainer.innerHTML = '';
-        
+
+        let sortedGroups = Object.values(grouped).sort(
+          (a, b) => a.dateObj - b.dateObj,
+        );
+
+        const tbody = document.getElementById("consolidatedBody");
+        const mobileContainer = document.getElementById("mobileLedgerList");
+
+        tbody.innerHTML = "";
+        mobileContainer.innerHTML = "";
+
         let grandTotal = 0;
-        
-        sortedGroups.forEach(group => {
-            // PC Row Render
-            const tr = document.createElement('tr');
-            const dateStr = formatDate(group.dateObj);
-            const pStartStr = formatDate(group.periodStart);
-            const pEndStr = formatDate(group.periodEnd);
-            
-            const diffTime = group.periodEnd - group.periodStart;
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
-            
-            const interestStr = Math.floor(group.totalInterest).toLocaleString();
-            grandTotal += group.totalInterest;
-            
-            const installmentList = group.installments.sort((a,b)=>a-b).map(i => `${i}회`).join(', ');
-            const rateStr = group.rate ? group.rate + "%" : "-";
-            
-            tr.innerHTML = `
+
+        sortedGroups.forEach((group) => {
+          // PC Row Render
+          const tr = document.createElement("tr");
+          const dateStr = formatDate(group.dateObj);
+          const pStartStr = formatDate(group.periodStart);
+          const pEndStr = formatDate(group.periodEnd);
+
+          const diffTime = group.periodEnd - group.periodStart;
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+
+          const interestStr = Math.floor(group.totalInterest).toLocaleString();
+          grandTotal += group.totalInterest;
+
+          const installmentList = group.installments
+            .sort((a, b) => a - b)
+            .map((i) => `${i}회`)
+            .join(", ");
+          const rateStr = group.rate ? group.rate + "%" : "-";
+
+          tr.innerHTML = `
                 <td class="center">${dateStr}</td>
                 <td class="center">${pStartStr}</td>
                 <td class="center">${pEndStr}</td>
@@ -949,12 +1171,12 @@
                 <td class="center">${rateStr}</td>
                 <td class="center" style="font-size: 0.85rem; color: #64748b;">${installmentList}</td>
             `;
-            tbody.appendChild(tr);
+          tbody.appendChild(tr);
 
-            // Mobile Card Render
-            const card = document.createElement('div');
-            card.className = 'mobile-ledger-card';
-            card.innerHTML = `
+          // Mobile Card Render
+          const card = document.createElement("div");
+          card.className = "mobile-ledger-card";
+          card.innerHTML = `
                 <div class="ledger-header">
                     <div class="ledger-date">${dateStr} 납부</div>
                     <div class="ledger-amount">${interestStr}원</div>
@@ -973,12 +1195,12 @@
                     <span>포함 회차: ${installmentList}</span>
                 </div>
             `;
-            mobileContainer.appendChild(card);
+          mobileContainer.appendChild(card);
         });
-        
+
         // PC Total Row - Add as First Row
-        const totalTr = document.createElement('tr');
-        totalTr.className = 'total-row';
+        const totalTr = document.createElement("tr");
+        totalTr.className = "total-row";
         totalTr.innerHTML = `
             <td colspan="4" class="center">총 이자 합계</td>
             <td class="right">${Math.floor(grandTotal).toLocaleString()}원</td>
@@ -987,10 +1209,10 @@
         tbody.prepend(totalTr);
 
         // Mobile Total Card - Add as First Card
-        const totalCard = document.createElement('div');
-        totalCard.className = 'mobile-ledger-card';
-        totalCard.style.backgroundColor = '#f0fdf4';
-        totalCard.style.borderColor = '#bbf7d0';
+        const totalCard = document.createElement("div");
+        totalCard.className = "mobile-ledger-card";
+        totalCard.style.backgroundColor = "#f0fdf4";
+        totalCard.style.borderColor = "#bbf7d0";
         totalCard.innerHTML = `
             <div class="ledger-header" style="border-bottom: none; padding-bottom: 0;">
                 <div class="ledger-date" style="color: #15803d;">총 이자 합계</div>
@@ -998,213 +1220,232 @@
             </div>
         `;
         mobileContainer.prepend(totalCard);
-    }
+      }
 
-    function calculatePeriodInterest(amount, pStart, pEnd, rates) {
+      function calculatePeriodInterest(amount, pStart, pEnd, rates) {
         let totalInt = 0;
         let appliedRate = 0;
         let cur = new Date(pStart);
         let end = new Date(pEnd);
-        
+
         if (cur > end) return { totalInterest: 0, appliedRate: 0 };
-        
+
         let safetyLoop = 0;
-        
+
         while (cur <= end && safetyLoop < 1000) {
-            safetyLoop++;
-            
-            let appRate = rates[0].rate;
-            for (let r of rates) {
-                if (new Date(r.date) <= cur) {
-                    appRate = r.rate;
-                } else {
-                    break;
-                }
-            }
-            appliedRate = appRate;
-            
-            let nextChange = null;
-            for (let r of rates) {
-                if (new Date(r.date) > cur) {
-                    nextChange = new Date(r.date);
-                    break;
-                }
-            }
-            
-            let segEnd = new Date(end);
-            if (nextChange && nextChange <= end) {
-                segEnd = new Date(nextChange);
-                segEnd.setDate(segEnd.getDate() - 1);
-            }
-            
-            let segInterest = 0;
-            let curYear = cur.getFullYear();
-            let segEndYear = segEnd.getFullYear();
-            
-            if (curYear === segEndYear) {
-                let diffMs = segEnd - cur;
-                let days = Math.floor(diffMs / (1000 * 60 * 60 * 24)) + 1;
-                if (days > 0) {
-                    let daysInYear = getDaysInYear(cur);
-                    segInterest = amount * (appRate / 100) * (days / daysInYear);
-                }
+          safetyLoop++;
+
+          let appRate = rates[0].rate;
+          for (let r of rates) {
+            if (new Date(r.date) <= cur) {
+              appRate = r.rate;
             } else {
-                let yearEnd = new Date(Date.UTC(curYear, 11, 31));
-                let diffMs1 = yearEnd - cur;
-                let days1 = Math.floor(diffMs1 / (1000 * 60 * 60 * 24)) + 1;
-                if (days1 > 0) {
-                    let daysInYear1 = getDaysInYear(cur);
-                    segInterest += amount * (appRate / 100) * (days1 / daysInYear1);
-                }
-                
-                for (let y = curYear + 1; y < segEndYear; y++) {
-                    let daysInYear = isLeapYear(y) ? 366 : 365;
-                    segInterest += amount * (appRate / 100) * (daysInYear / daysInYear);
-                }
-                
-                let yearStart = new Date(Date.UTC(segEndYear, 0, 1));
-                let diffMs2 = segEnd - yearStart;
-                let days2 = Math.floor(diffMs2 / (1000 * 60 * 60 * 24)) + 1;
-                if (days2 > 0) {
-                    let daysInYear2 = getDaysInYear(segEnd);
-                    segInterest += amount * (appRate / 100) * (days2 / daysInYear2);
-                }
+              break;
             }
-            
-            totalInt += segInterest;
-            cur = new Date(segEnd);
-            cur.setDate(cur.getDate() + 1);
+          }
+          appliedRate = appRate;
+
+          let nextChange = null;
+          for (let r of rates) {
+            if (new Date(r.date) > cur) {
+              nextChange = new Date(r.date);
+              break;
+            }
+          }
+
+          let segEnd = new Date(end);
+          if (nextChange && nextChange <= end) {
+            segEnd = new Date(nextChange);
+            segEnd.setDate(segEnd.getDate() - 1);
+          }
+
+          let segInterest = 0;
+          let curYear = cur.getFullYear();
+          let segEndYear = segEnd.getFullYear();
+
+          if (curYear === segEndYear) {
+            let diffMs = segEnd - cur;
+            let days = Math.floor(diffMs / (1000 * 60 * 60 * 24)) + 1;
+            if (days > 0) {
+              let daysInYear = getDaysInYear(cur);
+              segInterest = amount * (appRate / 100) * (days / daysInYear);
+            }
+          } else {
+            let yearEnd = new Date(Date.UTC(curYear, 11, 31));
+            let diffMs1 = yearEnd - cur;
+            let days1 = Math.floor(diffMs1 / (1000 * 60 * 60 * 24)) + 1;
+            if (days1 > 0) {
+              let daysInYear1 = getDaysInYear(cur);
+              segInterest += amount * (appRate / 100) * (days1 / daysInYear1);
+            }
+
+            for (let y = curYear + 1; y < segEndYear; y++) {
+              let daysInYear = isLeapYear(y) ? 366 : 365;
+              segInterest +=
+                amount * (appRate / 100) * (daysInYear / daysInYear);
+            }
+
+            let yearStart = new Date(Date.UTC(segEndYear, 0, 1));
+            let diffMs2 = segEnd - yearStart;
+            let days2 = Math.floor(diffMs2 / (1000 * 60 * 60 * 24)) + 1;
+            if (days2 > 0) {
+              let daysInYear2 = getDaysInYear(segEnd);
+              segInterest += amount * (appRate / 100) * (days2 / daysInYear2);
+            }
+          }
+
+          totalInt += segInterest;
+          cur = new Date(segEnd);
+          cur.setDate(cur.getDate() + 1);
         }
-        
+
         return { totalInterest: totalInt, appliedRate: appliedRate };
-    }
+      }
 
-    function calculateRow(index, updateConsolidated) {
+      function calculateRow(index, updateConsolidated) {
         if (updateConsolidated === undefined) {
-            updateConsolidated = true;
+          updateConsolidated = true;
         }
 
-        const finalDateVal = document.getElementById('finalDate').value;
-        const startDateVal = document.getElementsByClassName('start-date')[index].value;
-        const amountVal = parseFloat(document.getElementsByClassName('amount')[index].value) || 0;
+        const finalDateVal = document.getElementById("finalDate").value;
+        const startDateVal =
+          document.getElementsByClassName("start-date")[index].value;
+        const amountVal =
+          parseFloat(document.getElementsByClassName("amount")[index].value) ||
+          0;
 
         let diffDays = 0;
         let interest = 0;
 
         if (finalDateVal && startDateVal) {
-            const finalDate = new Date(finalDateVal);
-            const startDate = new Date(startDateVal);
-            
-            const sortedRates = [...rateHistory].sort((a, b) => new Date(a.date) - new Date(b.date));
+          const finalDate = new Date(finalDateVal);
+          const startDate = new Date(startDateVal);
 
-            if (finalDate > startDate) {
-                const diffTime = finalDate - startDate;
-                diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                
-                let currentDate = new Date(startDate);
-                const endDate = new Date(finalDate);
-                let safetyCount = 0;
-                
-                while (currentDate < endDate && safetyCount < 1000) {
-                    safetyCount++;
-                    
-                    let currentRateObj = sortedRates[0]; 
-                    for (let i = 0; i < sortedRates.length; i++) {
-                        if (new Date(sortedRates[i].date) <= currentDate) {
-                            currentRateObj = sortedRates[i];
-                        } else {
-                            break; 
-                        }
-                    }
-                    
-                    let nextChangeDate = null;
-                    for (let i = 0; i < sortedRates.length; i++) {
-                        if (new Date(sortedRates[i].date) > currentDate) {
-                            nextChangeDate = new Date(sortedRates[i].date);
-                            break;
-                        }
-                    }
-                    
-                    let segmentEnd = new Date(endDate);
-                    if (nextChangeDate && nextChangeDate < endDate) {
-                        segmentEnd = new Date(nextChangeDate);
-                    }
-                    
-                    let segInterest = 0;
-                    let curYear = currentDate.getFullYear();
-                    let segEndYear = segmentEnd.getFullYear();
-                    
-                    if (curYear === segEndYear) {
-                        const segDiffTime = segmentEnd - currentDate;
-                        const segDays = Math.ceil(segDiffTime / (1000 * 60 * 60 * 24));
-                        if (segDays > 0) {
-                            let daysInYear = getDaysInYear(currentDate);
-                            segInterest = amountVal * (currentRateObj.rate / 100) * (segDays / daysInYear);
-                        }
-                    } else {
-                        let yearEnd = new Date(Date.UTC(curYear, 11, 31));
-                        let diffMs1 = yearEnd - currentDate;
-                        let days1 = Math.ceil(diffMs1 / (1000 * 60 * 60 * 24));
-                        if (days1 > 0) {
-                            let daysInYear1 = getDaysInYear(currentDate);
-                            segInterest += amountVal * (currentRateObj.rate / 100) * (days1 / daysInYear1);
-                        }
-                        
-                        for (let y = curYear + 1; y < segEndYear; y++) {
-                            let daysInYear = isLeapYear(y) ? 366 : 365;
-                            segInterest += amountVal * (currentRateObj.rate / 100) * (daysInYear / daysInYear);
-                        }
-                        
-                        let yearStart = new Date(Date.UTC(segEndYear, 0, 1));
-                        let diffMs2 = segmentEnd - yearStart;
-                        let days2 = Math.ceil(diffMs2 / (1000 * 60 * 60 * 24));
-                        if (days2 > 0) {
-                            let daysInYear2 = getDaysInYear(segmentEnd);
-                            segInterest += amountVal * (currentRateObj.rate / 100) * (days2 / daysInYear2);
-                        }
-                    }
-                    
-                    interest += segInterest;
-                    currentDate = segmentEnd;
+          const sortedRates = [...rateHistory].sort(
+            (a, b) => new Date(a.date) - new Date(b.date),
+          );
+
+          if (finalDate > startDate) {
+            const diffTime = finalDate - startDate;
+            diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            let currentDate = new Date(startDate);
+            const endDate = new Date(finalDate);
+            let safetyCount = 0;
+
+            while (currentDate < endDate && safetyCount < 1000) {
+              safetyCount++;
+
+              let currentRateObj = sortedRates[0];
+              for (let i = 0; i < sortedRates.length; i++) {
+                if (new Date(sortedRates[i].date) <= currentDate) {
+                  currentRateObj = sortedRates[i];
+                } else {
+                  break;
                 }
+              }
+
+              let nextChangeDate = null;
+              for (let i = 0; i < sortedRates.length; i++) {
+                if (new Date(sortedRates[i].date) > currentDate) {
+                  nextChangeDate = new Date(sortedRates[i].date);
+                  break;
+                }
+              }
+
+              let segmentEnd = new Date(endDate);
+              if (nextChangeDate && nextChangeDate < endDate) {
+                segmentEnd = new Date(nextChangeDate);
+              }
+
+              let segInterest = 0;
+              let curYear = currentDate.getFullYear();
+              let segEndYear = segmentEnd.getFullYear();
+
+              if (curYear === segEndYear) {
+                const segDiffTime = segmentEnd - currentDate;
+                const segDays = Math.ceil(segDiffTime / (1000 * 60 * 60 * 24));
+                if (segDays > 0) {
+                  let daysInYear = getDaysInYear(currentDate);
+                  segInterest =
+                    amountVal *
+                    (currentRateObj.rate / 100) *
+                    (segDays / daysInYear);
+                }
+              } else {
+                let yearEnd = new Date(Date.UTC(curYear, 11, 31));
+                let diffMs1 = yearEnd - currentDate;
+                let days1 = Math.ceil(diffMs1 / (1000 * 60 * 60 * 24));
+                if (days1 > 0) {
+                  let daysInYear1 = getDaysInYear(currentDate);
+                  segInterest +=
+                    amountVal *
+                    (currentRateObj.rate / 100) *
+                    (days1 / daysInYear1);
+                }
+
+                for (let y = curYear + 1; y < segEndYear; y++) {
+                  let daysInYear = isLeapYear(y) ? 366 : 365;
+                  segInterest +=
+                    amountVal *
+                    (currentRateObj.rate / 100) *
+                    (daysInYear / daysInYear);
+                }
+
+                let yearStart = new Date(Date.UTC(segEndYear, 0, 1));
+                let diffMs2 = segmentEnd - yearStart;
+                let days2 = Math.ceil(diffMs2 / (1000 * 60 * 60 * 24));
+                if (days2 > 0) {
+                  let daysInYear2 = getDaysInYear(segmentEnd);
+                  segInterest +=
+                    amountVal *
+                    (currentRateObj.rate / 100) *
+                    (days2 / daysInYear2);
+                }
+              }
+
+              interest += segInterest;
+              currentDate = segmentEnd;
             }
+          }
         }
 
         document.getElementById(`days-${index}`).innerText = diffDays;
-        document.getElementById(`interest-${index}`).value = Math.floor(interest).toLocaleString();
+        document.getElementById(`interest-${index}`).value =
+          Math.floor(interest).toLocaleString();
 
-        const mStartDates = document.getElementsByClassName('m-start-date');
-        if(mStartDates[index]) mStartDates[index].value = startDateVal;
+        const mStartDates = document.getElementsByClassName("m-start-date");
+        if (mStartDates[index]) mStartDates[index].value = startDateVal;
 
-        const mAmounts = document.getElementsByClassName('m-amount');
-        if(mAmounts[index]) mAmounts[index].value = amountVal; 
+        const mAmounts = document.getElementsByClassName("m-amount");
+        if (mAmounts[index]) mAmounts[index].value = amountVal;
 
         document.getElementById(`m-days-${index}`).innerText = diffDays + "일";
-        document.getElementById(`m-interest-${index}`).value = Math.floor(interest).toLocaleString();
+        document.getElementById(`m-interest-${index}`).value =
+          Math.floor(interest).toLocaleString();
 
         if (updateConsolidated) {
-            calculateConsolidatedLedger();
+          calculateConsolidatedLedger();
         }
-    }
+      }
 
-    function calculateAll() {
-        const rows = document.querySelectorAll('#tableBody tr');
+      function calculateAll() {
+        const rows = document.querySelectorAll("#tableBody tr");
         rows.forEach((row, index) => {
-            calculateRow(index, false);
+          calculateRow(index, false);
         });
         calculateConsolidatedLedger();
-    }
+      }
 
-    function startApp() {
+      function startApp() {
         initTable();
-    }
+      }
 
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', startApp);
-    } else {
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", startApp);
+      } else {
         startApp();
-    }
-</script>
-
-</body>
+      }
+    </script>
+  </body>
 </html>
