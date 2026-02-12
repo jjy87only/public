@@ -249,6 +249,12 @@
       th,
       td {
         white-space: nowrap; /* Prevent text wrapping */
+        border-right: 1px solid var(--border); /* Add vertical divider */
+      }
+
+      th:last-child,
+      td:last-child {
+        border-right: none;
       }
 
       th {
